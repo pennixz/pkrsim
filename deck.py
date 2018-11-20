@@ -6,7 +6,7 @@ class Table(object):
         self.seats = 6
         self.deck = None
         self.hands = []
-        self.Flop = []
+        self.Flop = None
         self.Turn = None
         self.River = None
         self.k = None
@@ -38,8 +38,8 @@ class Table(object):
 
 class Deck(object):
     def __init__(self):
-        self.deckSize = 52
         self.deck = []
+        self.deckSize = 52
 
     def draw_card(self):
         res = self.deck.pop(0)
