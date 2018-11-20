@@ -1,11 +1,10 @@
-import deck as dck
+from deck import *
 
+table = Deck()
+table.create_cards()
 
-table = Table()
-table.deck = Deck()
-table.deck.create_cards()
-
-print(table.deck)
+table.show_cards()
+print(len(table.deck))
 
 
 
