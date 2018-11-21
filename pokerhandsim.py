@@ -9,8 +9,8 @@ table.deck.draw_hand(table.seat1)
 table.flop()
 table.turn()
 table.river()
-# print(table.eval_equals(table.seat1.show_hand()))
+
 
 print(table.eval_equals(table.seat1.hand))
 print(table.board)
-print(table.seat1.show_hand())
+print(table.seat1.hand)

@@ -95,22 +95,33 @@ class Table:
     def eval_equals(self, hand):
         
         # check if hand and board contains same ranked cards and returns amount of matches found in "poker terms"
-        # -- currently doesn't work. idk.
-        # -- this also probably won't be very effective with evaluating full house
-        r = re.compile('.' + hand[0][0])
-        rr = re.compile('.' + hand[1][0])
-        d = len(list(filter(r.match, self.board)))
-        dd = len(list(filter(rr.match, self.board)))
-        if d or dd:
-            if d == 4 or dd == 4:
-                return 'quads'
-            elif d == 3 or dd == 3:
-                return 'trips'
-            elif d == 2 or dd == 2:
-                return 'dubs'
-        
-      
+        # todo:
+        # - add check for pairs not connected to player hand
 
+        match_one = [x for x in self.board if hand[0][0] in x] 
+        match_two = [x for x in self.board if hand[1][0] in x]
+        total_matches = len(match_one) + len(match_two)
+        if match_one:
+            if len(match_one) == 4:
+                print('QUADS!')
+                print(match_one)
+            elif len(match_one) == 3:
+                print('TRIPS')
+                print(match_one)
+            elif len(match_one) == 2:
+                print('DUBS')
+                print(match_one)
+
+        if match_two:
+            if len(match_two) == 4:
+                print('QUADS!')
+                print(match_two)
+            elif len(match_two) == 3:
+                print('TRIPS')
+                print(match_two)
+            elif len(match_two) == 2:
+                print('DUBS')
+                print(match_two)
 
 
 
