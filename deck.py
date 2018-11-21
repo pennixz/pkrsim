@@ -26,12 +26,6 @@ class Deck:
         
         return res
 
-    def show_table(self):
-        res = []
-        for card in self.table:
-            res.append('{}{}'.format(card.rank, card.suit))
-        
-        return res
 
     def draw_card(self):
         return self.deck.pop(0)
