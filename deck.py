@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import numpy as np
+import re
 
 
 class Card:
@@ -9,7 +10,9 @@ class Card:
         self.rank = rank
         self.rank_numeric = rank_numeric
         self.suit = suit
-
+    
+    def show_card(self):
+        return '{}{}'.format(self.rank, self.suit)
 
 class Deck:
 
@@ -49,7 +52,7 @@ class Deck:
                 rank = 10
             for suit in self.possible_suits:
                 self.card = Card(rank, self.rank_val, suit)
-                self.deck.append(self.card)
+                self.deck.append(self.card.show_card())
 
             self.rank_val += 1
 
@@ -61,9 +64,7 @@ class Seat:
         self.hand = []
 
     def show_hand(self):
-        return '{}{}, {}{}'.format(self.hand[0].rank, 
-                self.hand[0].suit, self.hand[1].rank,
-                self.hand[1].suit)
+        return self.hand[0], self.hand[1]
 
 
 class Table:
@@ -80,14 +81,42 @@ class Table:
         self.seat6 = Seat()
 
                
+    def flop(self):
+        for i in range(3):
+            self.board.append(self.deck.draw_card())
 
-    def evaluate(hand):
-        # comparing hand to board cards
-        # 
-        # check royal flush > straight flush > FOAK >
-        # full house > flush > straight > three of a kind >
-        # two pair > one pair > high card
-        self.temp_val = 0
+    def turn(self):
+        self.board.append(self.deck.draw_card())
+
+    def river(self):
+        self.board.append(self.deck.draw_card())
+
+
+    def eval_equals(self, hand):
+        
+        # check if hand and board contains same ranked cards and returns amount of matches found in "poker terms"
+        # -- currently doesn't work. idk. 
+        r = re.compile('.' + hand[0][0])
+        rr = re.compile('.' + hand[1][0])
+        d = len(list(filter(r.match, self.board)))
+        dd = len(list(filter(rr.match, self.board)))
+        if d: 
+            if d == 4:
+                return 'quads'
+            elif d == 3:
+                return 'trips'
+            elif d == 2:
+                return 'dubs'
+
+        if dd:           
+            if dd == 4:
+                return 'quads'
+            elif dd == 3:
+                return 'trips'
+            elif dd == 2:
+                return 'dubs'
+
+      
 
 
 
