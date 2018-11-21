@@ -2,7 +2,10 @@ from deck import *
 
 
 # spade
+d = Deck()
+table = Table(d)
+table.deck.create_cards()
+table.deck.draw_hand(table.seat1)
 
-table = Deck()
-table.create_cards()
-table.show_deck()
+
+print(table.seat1.show_hand())

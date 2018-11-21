@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import numpy as np
-from unicards import unicard
 
 
 class Card:
@@ -19,15 +18,26 @@ class Deck:
         self.table = []
 
     def show_deck(self):
-        for card in self.deck:
-            print(unicard('{}{}'.format(card.rank, card.suit)))
+        res = []
+        for card in self.jeck:
+            res.append('{}{}'.format(card.rank, card.suit))
+        
+        return res
 
     def show_table(self):
+        res = []
         for card in self.table:
-            print('{}{}'.format(card.rank, card.suit))
+            res.append('{}{}'.format(card.rank, card.suit))
+        
+        return res
 
     def draw_card(self):
-        self.table.append(self.deck.pop(0))
+        return self.deck.pop(0)
+    
+    def draw_hand(self, seat):
+        c1 = self.deck.pop(0)
+        c2 = self.deck.pop(0)
+        seat.hand = [c1, c2]
 
     def create_cards(self):
         self.possible_ranks = '23456789xJQKA'
@@ -44,3 +54,41 @@ class Deck:
             self.rank_val += 1
 
         np.random.shuffle(self.deck)
+
+
+class Seat:
+    def __init__(self):
+        self.hand = []
+
+    def show_hand(self):
+        return '{}{}, {}{}'.format(self.hand[0].rank, 
+                self.hand[0].suit, self.hand[1].rank,
+                self.hand[1].suit)
+
+
+class Table:
+
+    def __init__(self, deck):
+        self.deck = deck
+        self.seats = 6
+        self.board = []
+        self.seat1 = Seat()
+        self.seat2 = Seat()
+        self.seat3 = Seat()
+        self.seat4 = Seat()
+        self.seat5 = Seat()
+        self.seat6 = Seat()
+
+               
+
+    def evaluate(hand):
+        # comparing hand to board cards
+        # 
+        # check royal flush > straight flush > FOAK >
+        # full house > flush > straight > three of a kind >
+        # two pair > one pair > high card
+        self.temp_val = 0
+
+
+
+
