@@ -38,9 +38,9 @@ class Deck:
         return self.deck.pop(0)
     
     def draw_hand(self, seat):
-        c1 = self.deck.pop(0)
-        c2 = self.deck.pop(0)
-        seat.hand = [c1, c2]
+        seat.hand.append(self.deck.pop(0))
+        seat.hand.append(self.deck.pop(0))
+
 
     def create_cards(self):
         self.possible_ranks = '23456789xJQKA'
@@ -52,7 +52,7 @@ class Deck:
                 rank = 10
             for suit in self.possible_suits:
                 self.card = Card(rank, self.rank_val, suit)
-                self.deck.append(self.card.show_card())
+                self.deck.append(self.card)
 
             self.rank_val += 1
 
@@ -63,8 +63,8 @@ class Seat:
     def __init__(self):
         self.hand = []
 
-    def show_hand(self):
-        return self.hand[0], self.hand[1]
+    def get_hand(self):
+        return '{}{}, {}{}'.format(self.hand[0].rank, self.hand[0].suit, self.hand[1].rank, self.hand[1].suit)
 
 
 class Table:
@@ -80,7 +80,13 @@ class Table:
         self.seat5 = Seat()
         self.seat6 = Seat()
 
-               
+    def show_board(self):
+        res = []
+        for cards in self.board:
+            res.append('{}{}'.format(cards.rank, cards.suit))
+        return res
+
+
     def flop(self):
         for i in range(3):
             self.board.append(self.deck.draw_card())
@@ -91,15 +97,18 @@ class Table:
     def river(self):
         self.board.append(self.deck.draw_card())
 
+    def eval_straight(self, hand):
+        self.dm = 0     
 
     def eval_equals(self, hand):
         
         # check if hand and board contains same ranked cards and returns amount of matches found in "poker terms"
         # todo:
         # - add check for pairs not connected to player hand
-
-        match_one = [x for x in self.board if hand[0][0] in x] 
-        match_two = [x for x in self.board if hand[1][0] in x]
+        
+        show = self.show_board()
+        match_one = [x for x in show if str(hand[0].rank) in str(x)] 
+        match_two = [x for x in show if str(hand[1].rank) in str(x)]
         total_matches = len(match_one) + len(match_two)
         if match_one:
             if len(match_one) == 4:
@@ -111,6 +120,8 @@ class Table:
             elif len(match_one) == 2:
                 print('DUBS')
                 print(match_one)
+                val = match_one[0][0] + match_one[0][0]
+                print('dub value: {}!'.format(val))
 
         if match_two:
             if len(match_two) == 4:
@@ -122,6 +133,8 @@ class Table:
             elif len(match_two) == 2:
                 print('DUBS')
                 print(match_two)
+                val = match_two[0][0] + match_one[0][0]
+                print('dub value: {}!'.format(val))
 
 
 

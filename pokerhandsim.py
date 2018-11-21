@@ -12,5 +12,5 @@ table.river()
 
 
 print(table.eval_equals(table.seat1.hand))
-print(table.board)
-print(table.seat1.hand)
+print(table.show_board())
+print(table.seat1.get_hand())
