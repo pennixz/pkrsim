@@ -4,22 +4,24 @@ import numpy as np
 
 
 class Card:
-
+    # class for creating cards
     def __init__(self, rank, rank_numeric, suit, ):
         self.rank = rank
         self.rank_numeric = rank_numeric
         self.suit = suit
     
     def show_card(self):
+        # returns card in string format
         return '{}{}'.format(self.rank, self.suit)
 
 class Deck:
-
+    # class for creating deck
     def __init__(self):
         self.deck = []
         self.table = []
 
     def show_deck(self):
+        # returns list of deck in string format
         res = []
         for card in self.deck:
             res.append('{}{}'.format(card.rank, card.suit))
@@ -28,22 +30,29 @@ class Deck:
 
 
     def draw_card(self):
+        # draws the top card of the deck and returns it
         return self.deck.pop(0)
     
     def draw_hand(self, seat):
+        # draw two cards from deck to seat.hand
         seat.hand.append(self.deck.pop(0))
         seat.hand.append(self.deck.pop(0))
 
 
     def create_cards(self):
+        # creating all 52 card possibilities
         self.possible_ranks = '23456789xJQKA'
         self.possible_suits = 'cdsh'
         self.rank_val = 1
 
         for rank in self.possible_ranks:
+            # looping through letters of possible_ranks
+            
             if rank == 'x':
                 rank = 10
+            
             for suit in self.possible_suits:
+                # looping through letters of possible_suits and finally creating new card with current rank and suit
                 self.card = Card(rank, self.rank_val, suit)
                 self.deck.append(self.card)
 
@@ -53,15 +62,17 @@ class Deck:
 
 
 class Seat:
+    # class for creating seat
     def __init__(self):
         self.hand = []
-
+    
     def get_hand(self):
+        # returns list of cards in hand as strings
         return '{}{}, {}{}'.format(self.hand[0].rank, self.hand[0].suit, self.hand[1].rank, self.hand[1].suit)
 
 
 class Table:
-
+    # class for creating table
     def __init__(self, deck):
         self.deck = deck
         self.seats = 6
@@ -74,6 +85,11 @@ class Table:
         self.seat6 = Seat()
 
     def show_board(self):
+        # return board in string format.
+        # E.g:
+        # >>> table.show_board()
+        # returns:
+        # >>> ['Jd', '8c', 'Ac', '9d', '2h']
         res = []
         for cards in self.board:
             res.append('{}{}'.format(cards.rank, cards.suit))
@@ -81,16 +97,27 @@ class Table:
 
 
     def flop(self):
+        # draw 3 top cards from deck and add to board list
+        # todo:
+        # - research poker rules for drawing cards, some may be supposed to be discarded and not put on board
         for i in range(3):
             self.board.append(self.deck.draw_card())
 
     def turn(self):
+        # todo: ^
         self.board.append(self.deck.draw_card())
 
     def river(self):
+        # todo: ^
         self.board.append(self.deck.draw_card())
 
     def eval_straight(self, hand):
+        # check if board cards and hand cards makes a straight using rank_numeric in reverse order
+        # todo:
+        # - add check for sorted numeric ranks to check straight(highest first)
+        # - add check to see if an Ace makes a straight with 2345 if no other found
+        # - ? add check for straight flush ?
+        # - ? add check for royal flush ? 
         self.dm = 0     
 
     def eval_equals(self, hand):
@@ -98,10 +125,17 @@ class Table:
         # check if hand and board contains same ranked cards and returns amount of matches found in "poker terms"
         # todo:
         # - add check for pairs not connected to player hand
-        
+        # - add check for pair in hand
+        # - add return pair value
+
         show = self.show_board()
-        match_one = [x for x in show if str(hand[0].rank) in str(x)] 
+        
+        # match rank of card one in hand with rank of cards on the board
+        match_one = [x for x in show if str(hand[0].rank) in str(x)]
+
+        # match rank of card two in hand with rank of cards on the board
         match_two = [x for x in show if str(hand[1].rank) in str(x)]
+        
         total_matches = len(match_one) + len(match_two)
         if match_one:
             if len(match_one) == 4:
