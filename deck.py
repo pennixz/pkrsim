@@ -53,6 +53,7 @@ class Deck:
             
             for suit in self.possible_suits:
                 # looping through letters of possible_suits and finally creating new card with current rank and suit
+               
                 self.card = Card(rank, self.rank_val, suit)
                 self.deck.append(self.card)
 
@@ -63,16 +64,19 @@ class Deck:
 
 class Seat:
     # class for creating seat
+    
     def __init__(self):
         self.hand = []
     
     def get_hand(self):
         # returns list of cards in hand as strings
+       
         return '{}{}, {}{}'.format(self.hand[0].rank, self.hand[0].suit, self.hand[1].rank, self.hand[1].suit)
 
 
 class Table:
     # class for creating table
+    
     def __init__(self, deck):
         self.deck = deck
         self.seats = 6
@@ -90,6 +94,7 @@ class Table:
         # >>> table.show_board()
         # returns:
         # >>> ['Jd', '8c', 'Ac', '9d', '2h']
+        
         res = []
         for cards in self.board:
             res.append('{}{}'.format(cards.rank, cards.suit))
@@ -100,15 +105,18 @@ class Table:
         # draw 3 top cards from deck and add to board list
         # todo:
         # - research poker rules for drawing cards, some may be supposed to be discarded and not put on board
+        
         for i in range(3):
             self.board.append(self.deck.draw_card())
 
     def turn(self):
         # todo: ^
+        
         self.board.append(self.deck.draw_card())
 
     def river(self):
         # todo: ^
+        
         self.board.append(self.deck.draw_card())
 
     def eval_straight(self, hand):
@@ -118,6 +126,7 @@ class Table:
         # - add check to see if an Ace makes a straight with 2345 if no other found
         # - ? add check for straight flush ?
         # - ? add check for royal flush ? 
+        
         self.dm = 0     
 
     def eval_equals(self, hand):
