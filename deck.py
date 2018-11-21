@@ -22,7 +22,7 @@ class Deck:
 
     def show_deck(self):
         res = []
-        for card in self.jeck:
+        for card in self.deck:
             res.append('{}{}'.format(card.rank, card.suit))
         
         return res
