@@ -127,8 +127,36 @@ class Table:
         # - ? add check for straight flush ?
         # - ? add check for royal flush ? 
         
-        self.dm = 0     
+        tmp = []
+        
+        card_one = hand[0].rank
+        print(card_one)
+         
+        for card in self.board:
+            tmp.append(card)
+        
+        for card in hand:
+            tmp.append(card)
 
+        #tmp.sort()
+        #tmp.reverse()
+        print(tmp)
+      
+        for x in tmp:
+            format_it = '{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank, tmp[x].suit, tmp[x+1].rank, tmp[x+1].suit, 
+                    tmp[x+2].rank, tmp[x+2].suit, tmp[x+3].rank, tmp[x+3].suit, tmp[x+4].rank, tmp[x+4].suit)
+
+            if (tmp[x.rank_numeric] == tmp[x.rank_numeric + 1] + 1 
+            and tmp[x.rank_numeric + 1] == tmp[x.rank_numeric + 2] + 1 
+            and tmp[x.rank_numeric + 2] == tmp[x.rank_numeric + 3] + 1 
+            and tmp[x.rank_numeric + 3] == tmp[x.rank_numeric + 4] + 1):
+            
+                  
+                print('STRAIGHT FOUND:')
+                print()
+    
+                        
+    
     def eval_equals(self, hand):
         
         # check if hand and board contains same ranked cards and returns amount of matches found in "poker terms"
