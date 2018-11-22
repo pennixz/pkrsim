@@ -119,10 +119,10 @@ class Table:
 
     def eval_straight(self, hand):
         # check if board cards and hand cards makes a straight using rank_numeric in reverse order
-        # todo: add check for sorted numeric ranks to check straight(highest first)
-        # todo: add check to see if an Ace makes a straight with 2345 if no other found
-        # todo: add check for straight flush ?
-        # todo: add check for royal flush ?
+        # add check for sorted numeric ranks to check straight(highest first)
+        # add check to see if an Ace makes a straight with 2345 if no other found
+        # add check for straight flush ?
+        # add check for royal flush ?
 
         tmp = []
 
@@ -139,17 +139,18 @@ class Table:
         # tmp.reverse()
         print(tmp)
 
-        for x in tmp:
-            format_it = '{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank, tmp[x].suit, tmp[x + 1].rank, tmp[x + 1].suit,
-                                                          tmp[x + 2].rank, tmp[x + 2].suit, tmp[x + 3].rank,
-                                                          tmp[x + 3].suit, tmp[x + 4].rank, tmp[x + 4].suit)
+        for x in range(3):
 
-            if (tmp[x.rank_numeric] == tmp[x.rank_numeric + 1] + 1
-                    and tmp[x.rank_numeric + 1] == tmp[x.rank_numeric + 2] + 1
-                    and tmp[x.rank_numeric + 2] == tmp[x.rank_numeric + 3] + 1
-                    and tmp[x.rank_numeric + 3] == tmp[x.rank_numeric + 4] + 1):
+            if (tmp[x].rank_numeric == tmp[x + 1].rank_numeric + 1
+                    and tmp[x + 1].rank_numeric == tmp[x + 2].rank_numeric + 1
+                    and tmp[x + 2].rank_numeric == tmp[x + 3].rank_numeric + 1
+                    and tmp[x + 3].rank_numeric == tmp[x + 4].rank_numeric + 1):
                 print('STRAIGHT FOUND:')
-                print()
+                format_it = '{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank, tmp[x].suit, tmp[x + 1].rank,
+                                                              tmp[x + 1].suit,
+                                                              tmp[x + 2].rank, tmp[x + 2].suit, tmp[x + 3].rank,
+                                                              tmp[x + 3].suit, tmp[x + 4].rank, tmp[x + 4].suit)
+                print(format_it)
 
     def eval_equals(self, hand):
 
