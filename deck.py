@@ -164,7 +164,7 @@ class Table:
             tem = []
             for j in range(hi):
                 if all_cards[i].rank[1] == all_cards[j].rank[1]:
-                    tem.append(all_cards[j])
+                    tem.append([all_cards[i], all_cards[j]])
 
                     hits += 1
             print(hits)
