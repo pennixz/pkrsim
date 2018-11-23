@@ -6,13 +6,12 @@ import numpy as np
 class Card:
     # class for creating cards
     def __init__(self, rank, rank_numeric, suit, ):
-        self.rank = rank
-        self.rank_numeric = rank_numeric
+        self.rank = rank, rank_numeric
         self.suit = suit
 
     def show_card(self):
         # returns card in string format
-        return '{}{}'.format(self.rank, self.suit)
+        return '{}{}'.format(self.rank[0], self.suit)
 
 
 class Deck:
@@ -20,12 +19,15 @@ class Deck:
     def __init__(self):
         self.deck = []
         self.table = []
+        self.possible_ranks = '23456789xJQKA'
+        self.possible_suits = 'cdsh'
+        self.rank_val = 1
 
     def show_deck(self):
         # returns list of deck in string format
         res = []
         for card in self.deck:
-            res.append('{}{}'.format(card.rank, card.suit))
+            res.append('{}{}'.format(card.rank[0], card.suit))
 
         return res
 
@@ -40,10 +42,6 @@ class Deck:
 
     def create_cards(self):
         # creating all 52 card possibilities
-        self.possible_ranks = '23456789xJQKA'
-        self.possible_suits = 'cdsh'
-        self.rank_val = 1
-
         for rank in self.possible_ranks:
             # looping through letters of possible_ranks
 
@@ -53,8 +51,8 @@ class Deck:
             for suit in self.possible_suits:
                 # looping through letters of possible_suits and finally creating new card with current rank and suit
 
-                self.card = Card(rank, self.rank_val, suit)
-                self.deck.append(self.card)
+                card = Card(rank, self.rank_val, suit)
+                self.deck.append(card)
 
             self.rank_val += 1
 
@@ -70,12 +68,11 @@ class Seat:
     def get_hand(self):
         # returns list of cards in hand as strings
 
-        return '{}{}, {}{}'.format(self.hand[0].rank, self.hand[0].suit, self.hand[1].rank, self.hand[1].suit)
+        return '{}{}, {}{}'.format(self.hand[0].rank[0], self.hand[0].suit, self.hand[1].rank[0], self.hand[1].suit)
 
 
 class Table:
     # class for creating table
-
     def __init__(self, deck):
         self.deck = deck
         self.seats = 6
@@ -96,7 +93,7 @@ class Table:
 
         res = []
         for cards in self.board:
-            res.append('{}{}'.format(cards.rank, cards.suit))
+            res.append(str(cards.rank[0]) + cards.suit)
         return res
 
     def flop(self):
@@ -126,9 +123,6 @@ class Table:
 
         tmp = []
 
-        card_one = hand[0].rank
-        print(card_one)
-
         for card in self.board:
             tmp.append(card)
 
@@ -137,11 +131,10 @@ class Table:
 
         # tmp.sort()
         # tmp.reverse()
-        print(tmp)
 
-        for x in range(3):
+        for x in tmp:
 
-            if (tmp[x].rank_numeric == tmp[x + 1].rank_numeric + 1
+            if (x.rank_numeric == tmp[x + 1].rank_numeric + 1
                     and tmp[x + 1].rank_numeric == tmp[x + 2].rank_numeric + 1
                     and tmp[x + 2].rank_numeric == tmp[x + 3].rank_numeric + 1
                     and tmp[x + 3].rank_numeric == tmp[x + 4].rank_numeric + 1):
@@ -159,38 +152,54 @@ class Table:
         # - add check for pairs not connected to player hand
         # - add check for pair in hand
         # - add return pair value
+        all_cards = self.board + hand
+        all_cards.sort(key=lambda y: y.rank[1])
 
-        show = self.show_board()
+        dubs = []
+        trips = []
+        quads = []
+        hi = len(all_cards)
+        for i in range(hi):
+            hits = 0
+            tem = []
+            for j in range(hi):
+                if all_cards[i].rank[1] == all_cards[j].rank[1]:
+                    tem.append(all_cards[j])
 
-        # match rank of card one in hand with rank of cards on the board
-        match_one = [x for x in show if str(hand[0].rank) in str(x)]
+                    hits += 1
+            print(hits)
+            if hits >= 4:
+                quads.append(tem)
+            elif hits >= 3:
+                trips.append(tem)
+            elif hits >= 2:
+                dubs.append(tem)
 
-        # match rank of card two in hand with rank of cards on the board
-        match_two = [x for x in show if str(hand[1].rank) in str(x)]
+        if quads:
+            print(
+                'QUADS with these cards: {}{} {}{} {}{} {}{}'.format(quads[0][0].rank[0], quads[0][0].suit,
+                                                                     quads[0][1].rank[0],
+                                                                     quads[0][1].suit, quads[0][2].rank[0],
+                                                                     quads[0][2].suit,
+                                                                     quads[0][3].rank[0], quads[0][3].suit))
+        elif trips:
+            print(trips[0])
+            # print('TRIPS with these cards: {}{} {}{} {}{}'.format(trips[0][0].rank[0], trips[0][0].suit,
+            #                                                      trips[0][1].rank[0],
+            #                                                      trips[0][1].suit, trips[0][2].rank[0],
+            #                                                      trips[0][2].suit, ))
+        elif dubs:
+            print(dubs)
+            # top_pair = self.get_biggest_pair(dubs)
+            # print('DUBS with these cards: {]{] {]{]'.format(top_pair[0].rank[0], top_pair[0].suit, top_pair[1].rank[0],
+            #                                               top_pair[1].suit))
 
-        total_matches = len(match_one) + len(match_two)
-        if match_one:
-            if len(match_one) == 4:
-                print('QUADS!')
-                print(match_one)
-            elif len(match_one) == 3:
-                print('TRIPS')
-                print(match_one)
-            elif len(match_one) == 2:
-                print('DUBS')
-                print(match_one)
-                val = match_one[0][0] + match_one[0][0]
-                print('dub value: {}!'.format(val))
 
-        if match_two:
-            if len(match_two) == 4:
-                print('QUADS!')
-                print(match_two)
-            elif len(match_two) == 3:
-                print('TRIPS')
-                print(match_two)
-            elif len(match_two) == 2:
-                print('DUBS')
-                print(match_two)
-                val = match_two[0][0] + match_one[0][0]
-                print('dub value: {}!'.format(val))
+def get_biggest_pair(list_of_equals):
+    ceil = 0
+    top_pair = None
+    for x in range(len(list_of_equals)):
+        if list_of_equals[x][0].rank(1) > ceil:
+            ceil = list_of_equals[x][0].rank[1]
+            top_pair = list_of_equals[x]
+    return top_pair
