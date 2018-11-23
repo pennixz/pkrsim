@@ -129,20 +129,20 @@ class Table:
         for card in hand:
             tmp.append(card)
 
-        # tmp.sort()
-        # tmp.reverse()
+        tmp.sort(key=lambda y: y.rank[1])
+        tmp.reverse()
+        
+        for x in range(3):
 
-        for x in tmp:
-
-            if (x.rank_numeric == tmp[x + 1].rank_numeric + 1
-                    and tmp[x + 1].rank_numeric == tmp[x + 2].rank_numeric + 1
-                    and tmp[x + 2].rank_numeric == tmp[x + 3].rank_numeric + 1
-                    and tmp[x + 3].rank_numeric == tmp[x + 4].rank_numeric + 1):
+            if (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
+                    and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
+                    and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
+                    and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1):
                 print('STRAIGHT FOUND:')
-                format_it = '{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank, tmp[x].suit, tmp[x + 1].rank,
+                format_it = '{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank[0], tmp[x].suit, tmp[x + 1].rank[0],
                                                               tmp[x + 1].suit,
-                                                              tmp[x + 2].rank, tmp[x + 2].suit, tmp[x + 3].rank,
-                                                              tmp[x + 3].suit, tmp[x + 4].rank, tmp[x + 4].suit)
+                                                              tmp[x + 2].rank[0], tmp[x + 2].suit, tmp[x + 3].rank[0],
+                                                              tmp[x + 3].suit, tmp[x + 4].rank[0], tmp[x + 4].suit)
                 print(format_it)
 
     def eval_equals(self, hand):
@@ -205,7 +205,7 @@ class Table:
                                                                      quads[0][0][2].suit,
                                                                      quads[0][0][3].rank[0], quads[0][0][3].suit))
         elif trips:
-            print(trips[0])
+            
             print('TRIPS with these cards: {}{} {}{} {}{}'.format(trips[0][0].rank[0], trips[0][0].suit,
                                                                   trips[0][1].rank[0],
                                                                   trips[0][1].suit, trips[0][2].rank[0],
@@ -228,5 +228,5 @@ def get_biggest_pair(list_of_equals):
         if list_of_equals[x][0].rank[1] > ceil:
             ceil = list_of_equals[x][0].rank[1]
             top_pair = [list_of_equals[x][0], list_of_equals[x][1]]
-    print(top_pair)
+    
     return top_pair
