@@ -163,11 +163,17 @@ class Table:
             hits = 0
             tem = []
             for j in range(hi):
+                if j == 0:
+                    if all_cards[i].rank[1] == all_cards[j+1].rank[1]:
+                        tem.append(all_cards[i])
                 if all_cards[i].rank[1] == all_cards[j].rank[1]:
-                    tem.append([all_cards[i], all_cards[j]])
+                    try:
+                        print(tem)
+                    except ValueError:
+                        print('it\'s not there')
+                    tem.append(all_cards[j])
 
                     hits += 1
-            print(hits)
             if hits >= 4:
                 quads.append(tem)
             elif hits >= 3:
@@ -177,29 +183,33 @@ class Table:
 
         if quads:
             print(
-                'QUADS with these cards: {}{} {}{} {}{} {}{}'.format(quads[0][0].rank[0], quads[0][0].suit,
-                                                                     quads[0][1].rank[0],
-                                                                     quads[0][1].suit, quads[0][2].rank[0],
-                                                                     quads[0][2].suit,
-                                                                     quads[0][3].rank[0], quads[0][3].suit))
+                'QUADS with these cards: {}{} {}{} {}{} {}{}'.format(quads[0][0][0].rank[0], quads[0][0][0].suit,
+                                                                     quads[0][0][1].rank[0],
+                                                                     quads[0][0][1].suit, quads[0][0][2].rank[0],
+                                                                     quads[0][0][2].suit,
+                                                                     quads[0][0][3].rank[0], quads[0][0][3].suit))
         elif trips:
             print(trips[0])
             # print('TRIPS with these cards: {}{} {}{} {}{}'.format(trips[0][0].rank[0], trips[0][0].suit,
             #                                                      trips[0][1].rank[0],
             #                                                      trips[0][1].suit, trips[0][2].rank[0],
             #                                                      trips[0][2].suit, ))
+        elif dubs and len(dubs) > 1:
+            top_pair = get_biggest_pair(dubs)
+            print('DUBS with these cards: {}{} {}{}'.format(top_pair[0].rank[0], top_pair[0].suit, top_pair[1].rank[0],
+                                                            top_pair[1].suit))
         elif dubs:
-            print(dubs)
-            # top_pair = self.get_biggest_pair(dubs)
-            # print('DUBS with these cards: {]{] {]{]'.format(top_pair[0].rank[0], top_pair[0].suit, top_pair[1].rank[0],
-            #                                               top_pair[1].suit))
+            print('DUBS with these cards: {}{} {}{}'.format(dubs[0][0][0].rank[0], dubs[0][0][0].suit,
+                                                            dubs[0][0][1].rank[0],
+                                                            dubs[0][0][1].suit))
 
 
 def get_biggest_pair(list_of_equals):
     ceil = 0
     top_pair = None
-    for x in range(len(list_of_equals)):
-        if list_of_equals[x][0].rank(1) > ceil:
-            ceil = list_of_equals[x][0].rank[1]
-            top_pair = list_of_equals[x]
+
+    for x in range(len(list_of_equals[0])):
+        if list_of_equals[0][x][0].rank[1] > ceil:
+            ceil = list_of_equals[0][x][0].rank[1]
+            top_pair = list_of_equals[0][x]
     return top_pair
