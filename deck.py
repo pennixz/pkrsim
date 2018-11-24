@@ -262,8 +262,7 @@ class Table:
                 quads.append(tem)
             elif hits >= 3:
                 trips.append(tem)
-                dubs.append(tem[0])
-                dubs.append(tem[1])
+                dubs.append([tem[0], tem[1]])
             elif hits >= 2:
                 dubs.append(tem)
         if quads:
