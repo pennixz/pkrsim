@@ -251,7 +251,15 @@ class Table:
                 trips.append(tem)
             elif hits >= 2:
                 dubs.append(tem)
-        if trips and dubs:
+        if quads:
+            print(
+                'QUADS with these cards: {}{} {}{} {}{} {}{}'.format(quads[0][0].rank[0], quads[0][0].suit,
+                                                                     quads[0][1].rank[0],
+                                                                     quads[0][1].suit, quads[0][2].rank[0],
+                                                                     quads[0][2].suit,
+                                                                     quads[0][3].rank[0], quads[0][3].suit))
+
+        elif trips and dubs:
             if len(dubs) > 1:
                 top_pair = get_biggest_pair(dubs)
             
@@ -260,13 +268,7 @@ class Table:
                                                                     trips[0][2].rank[0], trips[0][2].suit,
                                                                     top_pair[0].rank[0], top_pair[0].suit,
                                                                     top_pair[1].rank[0], top_pair[1].suit))
-        elif quads:
-            print(
-                'QUADS with these cards: {}{} {}{} {}{} {}{}'.format(quads[0][0].rank[0], quads[0][0].suit,
-                                                                     quads[0][1].rank[0],
-                                                                     quads[0][1].suit, quads[0][2].rank[0],
-                                                                     quads[0][2].suit,
-                                                                     quads[0][3].rank[0], quads[0][3].suit))
+                                                                   
         elif trips:
             
             print('TRIPS with these cards: {}{} {}{} {}{}'.format(trips[0][0].rank[0], trips[0][0].suit,
@@ -282,7 +284,7 @@ class Table:
                                                             dubs[0][1].rank[0],
                                                             dubs[0][1].suit))
         else:
-            print('High card: {}{}'.format(all_cards[0].rank[1], all_cards[0].suit))
+            print('High card: {}{}'.format(all_cards[0].rank[0], all_cards[0].suit))
 
 def get_biggest_pair(list_of_equals):
     ceil = 0
