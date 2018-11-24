@@ -281,7 +281,8 @@ class Table:
             print('DUBS with these cards: {}{} {}{}'.format(dubs[0][0].rank[0], dubs[0][0].suit,
                                                             dubs[0][1].rank[0],
                                                             dubs[0][1].suit))
-
+        else:
+            print('High card: {}{}'.format(all_cards[0].rank[1], all_cards[0].suit))
 
 def get_biggest_pair(list_of_equals):
     ceil = 0
