@@ -19,6 +19,7 @@ class Deck:
     def __init__(self):
         self.deck = []
         self.table = []
+        self.burn_cards = []
         self.possible_ranks = '23456789xJQKA'
         self.possible_suits = 'cdsh'
         self.rank_val = 1
@@ -39,6 +40,9 @@ class Deck:
         # draw two cards from deck to seat.hand
         seat.hand.append(self.deck.pop(0))
         seat.hand.append(self.deck.pop(0))
+    
+    def burn_card(self):
+        self.burn_cards.append(self.deck.pop(0))
 
     def create_cards(self):
         # creating all 52 card possibilities
@@ -97,23 +101,19 @@ class Table:
         return res
 
     def flop(self):
-        # draw 3 top cards from deck and add to board list
-        # todo:
-        # - research poker rules for drawing cards, some may be supposed to be discarded and not put on board
-
+        
+        self.deck.burn_card()
         for i in range(3):
             self.board.append(self.deck.draw_card())
 
     def turn(self):
-        # todo: ^
-
+        self.deck.burn_card()
         self.board.append(self.deck.draw_card())
 
     def river(self):
-        # todo: ^
-
+        self.deck.burn_card() 
         self.board.append(self.deck.draw_card())
-    
+ 
 
     def eval_all(self, hand):
         self.eval_straight(hand)
@@ -122,11 +122,10 @@ class Table:
 
     def eval_straight(self, hand):
         # check if board cards and hand cards makes a straight using rank_numeric in reverse order
-        # add check for sorted numeric ranks to check straight(highest first)
-        # add check to see if an Ace makes a straight with 2345 if no other found
-        # add check for straight flush ?
-        # add check for royal flush ?
-
+        # check for sorted numeric ranks to check straight(highest first)
+        # todo: add check to see if an Ace makes a straight with 2345 if no other found
+        # check for straight flush 
+        
         tmp = []
 
         for card in self.board:
@@ -153,8 +152,7 @@ class Table:
             elif (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
                 and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
                 and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
-                and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1
-                and tmp[x + 4].rank[1] == tmp[x + 5].rank[1] + 1):
+                and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1):
                 print('STRAIGHT FOUND:')
                 format_it = '{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank[0], tmp[x].suit, tmp[x + 1].rank[0],
                                                               tmp[x + 1].suit,
