@@ -193,7 +193,7 @@ class Table:
             hearts.reverse()
             print('{}{} {}{} {}{} {}{} {}{}'.format(hearts[0].rank[0], hearts[0].suit, hearts[1].rank[0],
                                                     hearts[1].suit, hearts[2].rank[0], hearts[2].suit,
-                                                    hearts[3].rank[1],
+                                                    hearts[3].rank[0],
                                                     hearts[3].suit, hearts[4].rank[0], hearts[4].suit))
         if len(diamonds) >= 5:
             print('FLUSH!')
@@ -201,7 +201,7 @@ class Table:
             diamonds.reverse()
             print('{}{} {}{} {}{} {}{} {}{}'.format(diamonds[0].rank[0], diamonds[0].suit, diamonds[1].rank[0],
                                                     diamonds[1].suit, diamonds[2].rank[0], diamonds[2].suit,
-                                                    diamonds[3].rank[1],
+                                                    diamonds[3].rank[0],
                                                     diamonds[3].suit, diamonds[4].rank[0], diamonds[4].suit))
         if len(clubs) >= 5:
             print('FLUSH!')
@@ -209,7 +209,7 @@ class Table:
             clubs.reverse()
             print('{}{} {}{} {}{} {}{} {}{}'.format(clubs[0].rank[0], clubs[0].suit, clubs[1].rank[0],
                                                     clubs[1].suit, clubs[2].rank[0], clubs[2].suit,
-                                                    clubs[3].rank[1],
+                                                    clubs[3].rank[0],
                                                     clubs[3].suit, clubs[4].rank[0], clubs[4].suit))
         if len(spades) >= 5:
             print('FLUSH!')
@@ -217,7 +217,7 @@ class Table:
             spades.reverse()
             print('{}{} {}{} {}{} {}{} {}{}'.format(spades[0].rank[0], spades[0].suit, spades[1].rank[0],
                                                     spades[1].suit, spades[2].rank[0], spades[2].suit,
-                                                    spades[3].rank[1],
+                                                    spades[3].rank[0],
                                                     spades[3].suit, spades[4].rank[0], spades[4].suit))
 
     def eval_equals(self, hand):
@@ -276,13 +276,30 @@ class Table:
         elif trips and dubs:
             if len(dubs) > 1:
                 top_pair = get_biggest_pair(dubs)
-
-            print('FULL HOUSE with these cards: {}{} {}{} {}{} {}{} {}{}'.format(trips[0][0].rank[0], trips[0][0].suit,
+                try:
+                    if trips.index(top_pair[0]):
+                        dubs.pop(dubs.index(top_pair[0]))
+                    if trips.index(top_pair[1]):
+                        dubs.pop(dubs.index(top_pair[1]))
+                        top_pair = get_biggest_pair(dubs)
+                
+                except ValueError:
+                    pass
+            else:
+                top_pair = [dubs[0][0], dubs[0][1]]
+                try:
+                    if trips.index(top_pair[0]):
+                        dubs.pop(dubs.index(top_pair[0]))
+                    if trips.index(top_pair[1]):
+                        dubs.pop(dubs.index(top_pair[1]))
+                        
+            if trips and dubs:
+                print('FULL HOUSE with these cards: {}{} {}{} {}{} {}{} {}{}'.format(trips[0][0].rank[0], trips[0][0].suit,
                                                                                  trips[0][1].rank[0], trips[0][1].suit,
                                                                                  trips[0][2].rank[0], trips[0][2].suit,
                                                                                  top_pair[0].rank[0], top_pair[0].suit,
                                                                                  top_pair[1].rank[0], top_pair[1].suit))
-
+    
         elif trips:
 
             print('TRIPS with these cards: {}{} {}{} {}{}'.format(trips[0][0].rank[0], trips[0][0].suit,
