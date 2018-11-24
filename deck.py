@@ -113,6 +113,12 @@ class Table:
         # todo: ^
 
         self.board.append(self.deck.draw_card())
+    
+
+    def eval_all(self, hand):
+        self.eval_straight(hand)
+        self.eval_flush(hand)
+        self.eval_equals(hand)
 
     def eval_straight(self, hand):
         # check if board cards and hand cards makes a straight using rank_numeric in reverse order
@@ -135,15 +141,52 @@ class Table:
         for x in range(3):
 
             if (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
+                    and tmp[x].suit == tmp[x + 1].suit
                     and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
+                    and tmp[x + 1].suit == tmp[x + 2].suit
                     and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
-                    and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1):
+                    and tmp[x + 2].suit == tmp[x + 3].suit
+                    and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1
+                    and tmp[x + 3].suit == tmp[x + 4].suit):
+                            print('STRAIGHT FLUSH!')
+                            print('{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank[0], tmp[x].suit, tmp[x + 1].rank[0], tmp[x + 1].suit, tmp[x + 2].rank[0], tmp[x + 2].suit, tmp[x + 3].rank[0], tmp[x + 3].suit, tmp[x + 4].rank[0], tmp[x + 4].suit))
+            elif (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
+                and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
+                and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
+                and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1
+                and tmp[x + 4].rank[1] == tmp[x + 5].rank[1] + 1):
                 print('STRAIGHT FOUND:')
                 format_it = '{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank[0], tmp[x].suit, tmp[x + 1].rank[0],
                                                               tmp[x + 1].suit,
                                                               tmp[x + 2].rank[0], tmp[x + 2].suit, tmp[x + 3].rank[0],
                                                               tmp[x + 3].suit, tmp[x + 4].rank[0], tmp[x + 4].suit)
                 print(format_it)
+    
+
+    def eval_flush(self, hand):
+        hearts = []
+        diamonds = []
+        spades = []
+        clubs = []
+        all_cards = self.board + hand
+        for i in range(len(all_cards)):
+            if all_cards[i].suit == 'h':
+                hearts.append(all_cards[i])
+            elif all_cards[i].suit == 'd':
+                diamonds.append(all_cards[i])
+            elif all_cards[i].suit == 'c':
+                clubs.append(all_cards[i])
+            elif all_cards[i].suit == 's':
+                spades.append(all_cards[i])
+
+        if len(hearts) >= 5:
+            print('FLUSH!')
+            hearts.sort(key=lambda y: y.rank[1])
+            hearts.reverse()
+            print('{}{} {}{} {}{} {}{} {}{}'.format(hearts[0].rank[0], hearts[0].suit, hearts[1].rank[0],
+                                                hearts[1].suit, hearts[2].rank[0], hearts[2].suit, hearts[3].rank[1],
+                                                hearts[3].suit, hearts[4].rank[0], hearts[4].suit))
+    
 
     def eval_equals(self, hand):
 
