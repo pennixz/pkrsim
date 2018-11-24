@@ -12,10 +12,11 @@ table.deck.draw_hand(table.seat4)
 table.deck.draw_hand(table.seat5)
 table.deck.draw_hand(table.seat6)
 
-table.flop()
-table.turn()
-table.river()
+# table.flop()
+# table.turn()
+# table.river()
 # table.board = table.deck.create_royal_flush()
+table.board = create_full_house()
 
 print('Seat1 evals:')
 print('Hand: {}{} {}{}'.format(table.seat1.hand[0].rank[0], table.seat1.hand[0].suit, table.seat1.hand[1].rank[0],

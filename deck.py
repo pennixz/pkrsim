@@ -229,6 +229,7 @@ class Table:
         # - add return pair value
         all_cards = self.board + hand
         all_cards.sort(key=lambda y: y.rank[1])
+        all_cards.reverse()
 
         dubs = []
         trips = []
@@ -261,6 +262,8 @@ class Table:
                 quads.append(tem)
             elif hits >= 3:
                 trips.append(tem)
+                dubs.append(tem[0])
+                dubs.append(tem[1])
             elif hits >= 2:
                 dubs.append(tem)
         if quads:
@@ -323,4 +326,20 @@ def create_royal_flush():
     res.append(card)
     card = Card('10', 10, 'h')
     res.append(card)
+    return res
+
+
+def create_full_house():
+    res = []
+    card = Card('J', 11, 'h')
+    res.append(card)
+    card = Card('J', 11, 'd')
+    res.append(card)
+    card = Card('J', 11, 'c')
+    res.append(card)
+    card = Card('Q', 12, 'd')
+    res.append(card)
+    card = Card('Q', 12, 'c')
+    res.append(card)
+
     return res
