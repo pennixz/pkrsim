@@ -24,20 +24,6 @@ class Deck:
         self.possible_suits = 'cdsh'
         self.rank_val = 1
 
-    def create_royal_flush(self):
-        res = []
-        card = Card('A', 14, 'h')
-        res.append(card)
-        card = Card('K', 13, 'h')
-        res.append(card)
-        card = Card('Q', 12, 'h')
-        res.append(card)
-        card = Card('J', 11, 'h')
-        res.append(card)
-        card = Card('10', 10, 'h')
-        res.append(card)
-        return res
-
     def show_deck(self):
         # returns list of deck in string format
         res = []
@@ -213,10 +199,10 @@ class Table:
             print('FLUSH!')
             diamonds.sort(key=lambda y: y.rank[1])
             diamonds.reverse()
-            print('{}{} {}{} {}{} {}{} {}{}'.format(diamonds[0].rank[0],    diamonds[0].suit,   diamonds[1].rank[0],
-                                                    diamonds[1].suit,   diamonds[2].rank[0],    diamonds[2].suit,
+            print('{}{} {}{} {}{} {}{} {}{}'.format(diamonds[0].rank[0], diamonds[0].suit, diamonds[1].rank[0],
+                                                    diamonds[1].suit, diamonds[2].rank[0], diamonds[2].suit,
                                                     diamonds[3].rank[1],
-                                                    diamonds[3].suit,   diamonds[4].rank[0],    diamonds[4].suit))
+                                                    diamonds[3].suit, diamonds[4].rank[0], diamonds[4].suit))
         if len(clubs) >= 5:
             print('FLUSH!')
             clubs.sort(key=lambda y: y.rank[1])
@@ -323,3 +309,18 @@ def get_biggest_pair(list_of_equals):
             top_pair = [list_of_equals[x][0], list_of_equals[x][1]]
 
     return top_pair
+
+
+def create_royal_flush():
+    res = []
+    card = Card('A', 14, 'h')
+    res.append(card)
+    card = Card('K', 13, 'h')
+    res.append(card)
+    card = Card('Q', 12, 'h')
+    res.append(card)
+    card = Card('J', 11, 'h')
+    res.append(card)
+    card = Card('10', 10, 'h')
+    res.append(card)
+    return res
