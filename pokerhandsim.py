@@ -15,6 +15,7 @@ table.deck.draw_hand(table.seat6)
 table.flop()
 table.turn()
 table.river()
+#table.board = table.deck.create_royal_flush()
 
 print('Seat1 evals:')    
 table.eval_straight(table.seat1.hand)

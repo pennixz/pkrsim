@@ -24,6 +24,20 @@ class Deck:
         self.possible_suits = 'cdsh'
         self.rank_val = 1
 
+    def create_royal_flush(self):
+        res = []
+        card = Card('A', 14, 'h')
+        res.append(card)
+        card = Card('K', 13, 'h')
+        res.append(card)
+        card = Card('Q', 12, 'h')
+        res.append(card)
+        card = Card('J', 11, 'h')
+        res.append(card)
+        card = Card('10', 10, 'h')
+        res.append(card)
+        return res
+
     def show_deck(self):
         # returns list of deck in string format
         res = []
@@ -147,7 +161,7 @@ class Table:
                     and tmp[x + 2].suit == tmp[x + 3].suit
                     and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1
                     and tmp[x + 3].suit == tmp[x + 4].suit):
-                            if tmp[x].rank[1] == 13:
+                            if tmp[x].rank[1] == 14:
                                 print('ROYAL FUCKING FLUSH')
                                 print('{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank[0], tmp[x].suit,
                                     tmp[x + 1].rank[0], tmp[x + 1].suit, tmp[x + 2].rank[0], tmp[x + 2].suit, 
