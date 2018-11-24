@@ -147,8 +147,16 @@ class Table:
                     and tmp[x + 2].suit == tmp[x + 3].suit
                     and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1
                     and tmp[x + 3].suit == tmp[x + 4].suit):
-                            print('STRAIGHT FLUSH!')
-                            print('{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank[0], tmp[x].suit, tmp[x + 1].rank[0], tmp[x + 1].suit, tmp[x + 2].rank[0], tmp[x + 2].suit, tmp[x + 3].rank[0], tmp[x + 3].suit, tmp[x + 4].rank[0], tmp[x + 4].suit))
+                            if tmp[x].rank[1] == 13:
+                                print('ROYAL FUCKING FLUSH')
+                                print('{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank[0], tmp[x].suit,
+                                    tmp[x + 1].rank[0], tmp[x + 1].suit, tmp[x + 2].rank[0], tmp[x + 2].suit, 
+                                    tmp[x + 3].rank[0], tmp[x + 3].suit, tmp[x + 4].rank[0], tmp[x + 4].suit))
+                            else:
+                                print('STRAIGHT FLUSH!')
+                                print('{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank[0], tmp[x].suit,
+                                    tmp[x + 1].rank[0], tmp[x + 1].suit, tmp[x + 2].rank[0], tmp[x + 2].suit, 
+                                    tmp[x + 3].rank[0], tmp[x + 3].suit, tmp[x + 4].rank[0], tmp[x + 4].suit))
             elif (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
                 and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
                 and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
@@ -240,11 +248,11 @@ class Table:
                                                                     top_pair[1].rank[0], top_pair[1].suit))
         elif quads:
             print(
-                'QUADS with these cards: {}{} {}{} {}{} {}{}'.format(quads[0][0][0].rank[0], quads[0][0][0].suit,
-                                                                     quads[0][0][1].rank[0],
-                                                                     quads[0][0][1].suit, quads[0][0][2].rank[0],
-                                                                     quads[0][0][2].suit,
-                                                                     quads[0][0][3].rank[0], quads[0][0][3].suit))
+                'QUADS with these cards: {}{} {}{} {}{} {}{}'.format(quads[0][0].rank[0], quads[0][0].suit,
+                                                                     quads[0][1].rank[0],
+                                                                     quads[0][1].suit, quads[0][2].rank[0],
+                                                                     quads[0][2].suit,
+                                                                     quads[0][3].rank[0], quads[0][3].suit))
         elif trips:
             
             print('TRIPS with these cards: {}{} {}{} {}{}'.format(trips[0][0].rank[0], trips[0][0].suit,
