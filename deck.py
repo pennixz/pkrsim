@@ -120,62 +120,28 @@ class Table:
         self.eval_equals(hand)
 
     def eval_straight(self, hand):
-        # check if board cards and hand cards makes a straight using rank_numeric in reverse order
-        # check for sorted numeric ranks to check straight(highest first)
-        # todo: add check to see if an Ace makes a straight with 2345 if no other found
-        # check for straight flush 
-
-        tmp = []
-
-        for card in self.board:
-            tmp.append(card)
-
-        for card in hand:
-            tmp.append(card)
-
+        res = []
+        tmp = self.board + hand
         tmp.sort(key=lambda y: y.rank[1])
         tmp.reverse()
-
+    
         for x in range(3):
 
             if (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
-                    and tmp[x].suit == tmp[x + 1].suit
                     and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
-                    and tmp[x + 1].suit == tmp[x + 2].suit
                     and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
-                    and tmp[x + 2].suit == tmp[x + 3].suit
-                    and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1
-                    and tmp[x + 3].suit == tmp[x + 4].suit):
-                if tmp[x].rank[1] == 14:
-                    print('ROYAL FUCKING FLUSH')
-                    print('{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank[0], tmp[x].suit,
-                                                            tmp[x + 1].rank[0], tmp[x + 1].suit, tmp[x + 2].rank[0],
-                                                            tmp[x + 2].suit,
-                                                            tmp[x + 3].rank[0], tmp[x + 3].suit, tmp[x + 4].rank[0],
-                                                            tmp[x + 4].suit))
-                else:
-                    print('STRAIGHT FLUSH!')
-                    print('{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank[0], tmp[x].suit,
-                                                            tmp[x + 1].rank[0], tmp[x + 1].suit, tmp[x + 2].rank[0],
-                                                            tmp[x + 2].suit,
-                                                            tmp[x + 3].rank[0], tmp[x + 3].suit, tmp[x + 4].rank[0],
-                                                            tmp[x + 4].suit))
-            elif (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
-                  and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
-                  and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
-                  and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1):
-                print('STRAIGHT FOUND:')
-                format_it = '{}{} {}{} {}{} {}{} {}{}'.format(tmp[x].rank[0], tmp[x].suit, tmp[x + 1].rank[0],
-                                                              tmp[x + 1].suit,
-                                                              tmp[x + 2].rank[0], tmp[x + 2].suit, tmp[x + 3].rank[0],
-                                                              tmp[x + 3].suit, tmp[x + 4].rank[0], tmp[x + 4].suit)
-                print(format_it)
+                    and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1):
+                    
+                res.append((tmp[x], tmp[x + 1], tmp[x + 2], tmp[x + 3], tmp[x + 4]))
+                res.append(tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] + tmp[x + 4].rank[1])
+                return res
 
     def eval_flush(self, hand):
         hearts = []
         diamonds = []
         spades = []
         clubs = []
+        res = []
         all_cards = self.board + hand
         for i in range(len(all_cards)):
             if all_cards[i].suit == 'h':
@@ -188,22 +154,22 @@ class Table:
                 spades.append(all_cards[i])
 
         if len(hearts) >= 5:
-            print('FLUSH!')
             hearts.sort(key=lambda y: y.rank[1])
-            hearts.reverse()
-            print('{}{} {}{} {}{} {}{} {}{}'.format(hearts[0].rank[0], hearts[0].suit, hearts[1].rank[0],
-                                                    hearts[1].suit, hearts[2].rank[0], hearts[2].suit,
-                                                    hearts[3].rank[0],
-                                                    hearts[3].suit, hearts[4].rank[0], hearts[4].suit))
+            hearts.reverse
+            res.append((hearts[0], hearts[1], hearts[2], hearts[3], hearts[4]))
+            res.append(hearts[0].rank[1] + hearts[1].rank[1] + hearts[2].rank[1] + hearts[3].rank[1] + hearts[4].rank[1])
+
+            return res
+
         if len(diamonds) >= 5:
-            print('FLUSH!')
             diamonds.sort(key=lambda y: y.rank[1])
-            diamonds.reverse()
-            print('{}{} {}{} {}{} {}{} {}{}'.format(diamonds[0].rank[0], diamonds[0].suit, diamonds[1].rank[0],
-                                                    diamonds[1].suit, diamonds[2].rank[0], diamonds[2].suit,
-                                                    diamonds[3].rank[0],
-                                                    diamonds[3].suit, diamonds[4].rank[0], diamonds[4].suit))
-        if len(clubs) >= 5:
+            diamonds.reverse
+            res.append((hearts[0], hearts[1], hearts[2], hearts[3], hearts[4]))
+            res.append(hearts[0].rank[1] + hearts[1].rank[1] + hearts[2].rank[1] + hearts[3].rank[1] + hearts[4].rank[1])
+
+            return res
+
+       if len(clubs) >= 5:
             print('FLUSH!')
             clubs.sort(key=lambda y: y.rank[1])
             clubs.reverse()
@@ -224,16 +190,47 @@ class Table:
         all_cards = self.board + hand
         all_cards.sort(key=lambda y: y.rank[1])
         all_cards.reverse()
-        n = 0
+        
         res = []
         for x in range(4):
-            if all_cards[x] == all_cards[x + 1] and all_cards[x + 1] == all_cards[x + 2] and :
-                n += 1
-                if x == 0:
+            if all_cards[x] == all_cards[x + 1] and all_cards[x + 1] == all_cards[x + 2] and all_cards[x + 2] == all_cards[x + 3]:
+                res.append((all_cards[x], all_cards[x + 1], all_cards[x + 2], all_cards[x + 3]))
+                res.append(all_cards[x].rank[1] * 4)
                     
-        if n >= 4:
+        return res
+
+    def eval_trips(self, hand):
+        all_cards = self.board + hand
+        all_cards.sort(key=lambda y: y.rank[1])
+        all_cards.reverse()
+
+        res = []
+        for x in range(5):
+            if all_cards[x] == all_cards[x + 1] and all_cards[x + 1] == all_cards [x + 2]:
+                res.append((all_cards[x], all_cards[x + 1], all_cards[x + 2]))
+                res.append(all_cards[x].rank[1] * 3)
+
+        return res
             
-            
+    def eval_pairs(self, hand):
+        all_cards = self.board + hand
+        all_cards.sort(key=lambda y: y.rank[1])
+        all_cards.reverse()
+
+        res = []
+        for x in range(6):
+            if all_cards[x] == all_cards[x + 1]:
+                res.append((all_cards[x], all_cards[x + 1]))
+                res.append(all_cards[x].rank[1] * 2)
+
+        return res
+
+    def eval_highcard(self, hand):
+        all_cards = self.board + hand
+        all_cards.sort(key = lambda y: y.rank[1])
+        all_cards.reverse()
+
+        return all_cards[0]
 
 def get_biggest_pair(list_of_equals):
     ceil = 0
