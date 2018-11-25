@@ -220,103 +220,20 @@ class Table:
                                                     spades[3].rank[0],
                                                     spades[3].suit, spades[4].rank[0], spades[4].suit))
 
-    def eval_equals(self, hand):
-
-        # check if hand and board contains same ranked cards and returns amount of matches found in "poker terms"
-        # todo:
-        # - add check for pairs not connected to player hand
-        # - add check for pair in hand
-        # - add return pair value
+    def eval_quads(self, hand):
         all_cards = self.board + hand
         all_cards.sort(key=lambda y: y.rank[1])
         all_cards.reverse()
-
-        dubs = []
-        trips = []
-        quads = []
-        hi = len(all_cards)
-        for i in range(hi):
-            hits = 0
-            tem = []
-            for j in range(hi):
-                if j == 0:
-                    if all_cards[i].rank[1] == all_cards[j + 1].rank[1]:
-                        tem.append(all_cards[i])
-                if all_cards[i].rank[1] == all_cards[j].rank[1]:
-                    try:
-                        if tem.index(all_cards[i]):
-                            pass
-
-                    except ValueError:
-                        tem.append(all_cards[i])
-
-                    try:
-                        if tem.index(all_cards[j]):
-                            pass
-
-                    except ValueError:
-                        tem.append(all_cards[j])
-
-                    hits += 1
-            if hits >= 4:
-                quads.append(tem)
-            elif hits >= 3:
-                trips.append(tem)
-                dubs.append([tem[0], tem[1]])
-            elif hits >= 2:
-                dubs.append(tem)
-        if quads:
-            print(
-                'QUADS with these cards: {}{} {}{} {}{} {}{}'.format(quads[0][0].rank[0], quads[0][0].suit,
-                                                                     quads[0][1].rank[0],
-                                                                     quads[0][1].suit, quads[0][2].rank[0],
-                                                                     quads[0][2].suit,
-                                                                     quads[0][3].rank[0], quads[0][3].suit))
-
-        elif trips and dubs:
-            if len(dubs) > 1:
-                top_pair = get_biggest_pair(dubs)
-                try:
-                    if trips.index(top_pair[0]):
-                        dubs.pop(dubs.index(top_pair[0]))
-                    if trips.index(top_pair[1]):
-                        dubs.pop(dubs.index(top_pair[1]))
-                        top_pair = get_biggest_pair(dubs)
-                
-                except ValueError:
-                    pass
-            else:
-                top_pair = [dubs[0][0], dubs[0][1]]
-                try:
-                    if trips.index(top_pair[0]):
-                        dubs.pop(dubs.index(top_pair[0]))
-                    if trips.index(top_pair[1]):
-                        dubs.pop(dubs.index(top_pair[1]))
-                        
-            if trips and dubs:
-                print('FULL HOUSE with these cards: {}{} {}{} {}{} {}{} {}{}'.format(trips[0][0].rank[0], trips[0][0].suit,
-                                                                                 trips[0][1].rank[0], trips[0][1].suit,
-                                                                                 trips[0][2].rank[0], trips[0][2].suit,
-                                                                                 top_pair[0].rank[0], top_pair[0].suit,
-                                                                                 top_pair[1].rank[0], top_pair[1].suit))
-    
-        elif trips:
-
-            print('TRIPS with these cards: {}{} {}{} {}{}'.format(trips[0][0].rank[0], trips[0][0].suit,
-                                                                  trips[0][1].rank[0],
-                                                                  trips[0][1].suit, trips[0][2].rank[0],
-                                                                  trips[0][2].suit, ))
-        elif dubs and len(dubs) > 1:
-            top_pair = get_biggest_pair(dubs)
-            print('DUBS with these cards: {}{} {}{}'.format(top_pair[0].rank[0], top_pair[0].suit, top_pair[1].rank[0],
-                                                            top_pair[1].suit))
-        elif dubs:
-            print('DUBS with these cards: {}{} {}{}'.format(dubs[0][0].rank[0], dubs[0][0].suit,
-                                                            dubs[0][1].rank[0],
-                                                            dubs[0][1].suit))
-        else:
-            print('High card: {}{}'.format(all_cards[0].rank[0], all_cards[0].suit))
-
+        n = 0
+        res = []
+        for x in range(4):
+            if all_cards[x] == all_cards[x + 1] and all_cards[x + 1] == all_cards[x + 2] and :
+                n += 1
+                if x == 0:
+                    
+        if n >= 4:
+            
+            
 
 def get_biggest_pair(list_of_equals):
     ceil = 0
