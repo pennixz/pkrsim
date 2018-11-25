@@ -224,17 +224,15 @@ class Table:
 
     def eval_all(self, hand):
         res = []
-        res.append(self.eval_straight(hand))
-        res.append(self.eval_flush(hand))
-        res.append(self.eval_quads(hand))
+        straightV = self.eval_straight(hand)
+        flushV = self.eval_flush(hand)
+        quadsV = self.eval_quads(hand)
         tripsV = self.eval_trips(hand)
-        res.append(tripsV)
         pairsV = self.eval_pairs(hand)
-        res.append(pairsV)
-        res.append(self.eval_high_card(hand))
-        res.append(self.eval_full_house(pairsV, tripsV))
+        highV = self.eval_high_card(hand)
+        full_houseV = self.eval_full_house(pairsV, tripsV)
 
-        return res
+        return straightV, flushV, quadsV, full_houseV, tripsV, pairsV, highV
 
 
 def create_royal_flush():
