@@ -217,19 +217,7 @@ class Table:
         return all_cards[0]
 
 
-def get_biggest_pair(self, list_of_equals):
-    ceil = 0
-    top_pair = None
-
-    for x in range(len(list_of_equals[0]) - 1):
-        if list_of_equals[x][0].rank[1] > ceil:
-            ceil = list_of_equals[x][0].rank[1]
-            top_pair = [list_of_equals[x][0], list_of_equals[x][1]]
-
-    return top_pair
-
-
-def create_royal_flush(self):
+def create_royal_flush():
     res = []
     card = Card('A', 14, 'h')
     res.append(card)
