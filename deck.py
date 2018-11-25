@@ -60,8 +60,8 @@ class Deck:
 class Seat:
     # class for creating seat
     def __init__(self):
-        self.hand = []
-
+        self.hand = [] 
+    
     def get_hand(self):
         # returns list of cards in hand as strings
         return '{}{}, {}{}'.format(self.hand[0].rank[0], self.hand[0].suit, self.hand[1].rank[0], self.hand[1].suit)
@@ -109,10 +109,22 @@ class Table:
                     and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
                     and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
                     and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1):
-                res.append((tmp[x], tmp[x + 1], tmp[x + 2], tmp[x + 3], tmp[x + 4]))
-                res.append(
-                    tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] + tmp[x + 4].rank[1])
-                return res
+                res.append([(tmp[x], tmp[x + 1], tmp[x + 2], tmp[x + 3], tmp[x + 4]),
+                    tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] + tmp[x + 4].rank[1]])
+        return res
+    
+    def eval_full_house(self, pairs, trips):
+        res = []
+        try:
+            if trips[0][0].index(pairs[0][0][0]) or trips[0][0].index(pairs[0][0][1]):
+                pass
+        except ValueError:
+            res.append([(trips[0][0], pairs[0][0]), trips[0][1] + pairs[0][1]])
+        except IndexError:
+            pass
+
+        return res
+
 
     def eval_flush(self, hand):
         hearts = []
@@ -134,38 +146,34 @@ class Table:
         if len(hearts) >= 5:
             hearts.sort(key=lambda y: y.rank[1])
             hearts.reverse()
-            res.append((hearts[0], hearts[1], hearts[2], hearts[3], hearts[4]))
-            res.append(
-                hearts[0].rank[1] + hearts[1].rank[1] + hearts[2].rank[1] + hearts[3].rank[1] + hearts[4].rank[1])
+            res.append([(hearts[0], hearts[1], hearts[2], hearts[3], hearts[4]),
+                hearts[0].rank[1] + hearts[1].rank[1] + hearts[2].rank[1] + hearts[3].rank[1] + hearts[4].rank[1]])
 
             return res
 
         elif len(diamonds) >= 5:
             diamonds.sort(key=lambda y: y.rank[1])
             diamonds.reverse()
-            res.append((hearts[0], hearts[1], hearts[2], hearts[3], hearts[4]))
-            res.append(
-                hearts[0].rank[1] + hearts[1].rank[1] + hearts[2].rank[1] + hearts[3].rank[1] + hearts[4].rank[1])
+            res.append([(hearts[0], hearts[1], hearts[2], hearts[3], hearts[4]),
+                hearts[0].rank[1] + hearts[1].rank[1] + hearts[2].rank[1] + hearts[3].rank[1] + hearts[4].rank[1]])
 
             return res
 
         elif len(clubs) >= 5:
             diamonds.sort(key=lambda y: y.rank[1])
             diamonds.reverse()
-            res.append((diamonds[0], diamonds[1], diamonds[2], diamonds[3], diamonds[4]))
-            res.append(
+            res.append([(diamonds[0], diamonds[1], diamonds[2], diamonds[3], diamonds[4]),
                 diamonds[0].rank[1] + diamonds[1].rank[1] + diamonds[2].rank[1] + diamonds[3].rank[1] +
-                diamonds[4].rank[1])
+                diamonds[4].rank[1]])
 
             return res
 
         elif len(spades) >= 5:
             spades.sort(key=lambda y: y.rank[1])
             spades.reverse()
-            res.append((spades[0], spades[1], spades[2], spades[3], spades[4]))
-            res.append(
+            res.append([(spades[0], spades[1], spades[2], spades[3], spades[4]),
                 spades[0].rank[1] + spades[1].rank[1] + spades[2].rank[1] + spades[3].rank[1] +
-                spades[4].rank[1])
+                spades[4].rank[1]])
 
             return res
 
@@ -176,10 +184,9 @@ class Table:
 
         res = []
         for x in range(4):
-            if all_cards[x] == all_cards[x + 1] and all_cards[x + 1] == all_cards[x + 2] and all_cards[x + 2] == \
-                    all_cards[x + 3]:
-                res.append((all_cards[x], all_cards[x + 1], all_cards[x + 2], all_cards[x + 3]))
-                res.append(all_cards[x].rank[1] * 4)
+            if (all_cards[x].rank[1] == all_cards[x + 1].rank[1] and all_cards[x + 1].rank[1] == all_cards[x + 2].rank[1] 
+                and all_cards[x + 2].rank[1] == all_cards[x + 3].rank[1]):
+                res.append([(all_cards[x], all_cards[x + 1], all_cards[x + 2], all_cards[x + 3]), all_cards[x].rank[1] * 4])
 
         return res
 
@@ -190,9 +197,8 @@ class Table:
 
         res = []
         for x in range(5):
-            if all_cards[x] == all_cards[x + 1] and all_cards[x + 1] == all_cards[x + 2]:
-                res.append((all_cards[x], all_cards[x + 1], all_cards[x + 2]))
-                res.append(all_cards[x].rank[1] * 3)
+            if all_cards[x].rank[1] == all_cards[x + 1].rank[1] and all_cards[x + 1].rank[1] == all_cards[x + 2].rank[1]:
+                res.append([(all_cards[x], all_cards[x + 1], all_cards[x + 2]), all_cards[x].rank[1] * 3])
 
         return res
 
@@ -203,9 +209,8 @@ class Table:
 
         res = []
         for x in range(6):
-            if all_cards[x] == all_cards[x + 1]:
-                res.append((all_cards[x], all_cards[x + 1]))
-                res.append(all_cards[x].rank[1] * 2)
+            if all_cards[x].rank[1] == all_cards[x + 1].rank[1]: 
+                res.append([(all_cards[x], all_cards[x + 1]),all_cards[x].rank[1] * 2])
 
         return res
 
@@ -215,6 +220,21 @@ class Table:
         all_cards.reverse()
 
         return all_cards[0]
+
+
+    def eval_all(self, hand):
+        res = []
+        res.append(self.eval_straight(hand))
+        res.append(self.eval_flush(hand))
+        res.append(self.eval_quads(hand))
+        tripsV = self.eval_trips(hand)
+        res.append(tripsV)
+        pairsV = self.eval_pairs(hand)
+        res.append(pairsV)
+        res.append(self.eval_high_card(hand))
+        res.append(self.eval_full_house(pairsV, tripsV))
+
+        return res
 
 
 def create_royal_flush():
@@ -232,7 +252,7 @@ def create_royal_flush():
     return res
 
 
-def create_full_house(self):
+def create_full_house():
     res = []
     card = Card('J', 11, 'h')
     res.append(card)
