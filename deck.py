@@ -154,7 +154,7 @@ class Table:
         elif len(diamonds) >= 5:
             diamonds.sort(key=lambda y: y.rank[1])
             diamonds.reverse()
-            res.append([(hearts[0], hearts[1], hearts[2], hearts[3], hearts[4]),
+            res.append([(diamonds[0], hearts[1], hearts[2], hearts[3], hearts[4]),
                 hearts[0].rank[1] + hearts[1].rank[1] + hearts[2].rank[1] + hearts[3].rank[1] + hearts[4].rank[1]])
 
             return res
@@ -221,6 +221,24 @@ class Table:
 
         return all_cards[0]
 
+    
+    def eval_winner(self):
+        seat1v = self.eval_all(self.seat1.hand)
+        seat1best = None
+        #seat2v = self.eval_all(self.seat2.hand)
+        #seat2best = None
+        #seat3v = self.eval_all(self.seat3.hand)
+        #seat3best = None
+        #seat4v = self.eval_all(self.seat4.hand)
+        #seat4best = None
+        #seat5v = self.eval_all(self.seat5.hand)
+        #seat5best = None
+        #seat6v = self.eval_all(self.seat6.hand)
+        #seat6best = None
+
+        if seat1v[0]:
+            seat1best = seat1v[0][1]
+                    
 
     def eval_all(self, hand):
         res = []
@@ -232,7 +250,7 @@ class Table:
         highV = self.eval_high_card(hand)
         full_houseV = self.eval_full_house(pairsV, tripsV)
 
-        return straightV, flushV, quadsV, full_houseV, tripsV, pairsV, highV
+        return quadsV, full_houseV, flushV, straightV, tripsV, pairsV, highV
 
 
 def create_royal_flush():
