@@ -60,8 +60,8 @@ class Deck:
 class Seat:
     # class for creating seat
     def __init__(self):
-        self.hand = [] 
-    
+        self.hand = []
+
     def get_hand(self):
         # returns list of cards in hand as strings
         return '{}{}, {}{}'.format(self.hand[0].rank[0], self.hand[0].suit, self.hand[1].rank[0], self.hand[1].suit)
@@ -110,12 +110,13 @@ class Table:
                     and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
                     and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1):
                 res.append([(tmp[x], tmp[x + 1], tmp[x + 2], tmp[x + 3], tmp[x + 4]),
-                    tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] + tmp[x + 4].rank[1]])
+                            tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] +
+                            tmp[x + 4].rank[1]])
         return res
-    
+
     def eval_full_house(self, pairs, trips):
         res = []
-        print(pairs[0][0])
+        print(pairs)
         try:
             if trips[0][0].index(pairs[0][0][0]) or trips[0][0].index(pairs[0][0][1]):
                 pass
@@ -125,7 +126,6 @@ class Table:
             pass
 
         return res
-
 
     def eval_flush(self, hand):
         hearts = []
@@ -148,24 +148,27 @@ class Table:
             hearts.sort(key=lambda y: y.rank[1])
             hearts.reverse()
             res.append([(hearts[0], hearts[1], hearts[2], hearts[3], hearts[4]),
-                hearts[0].rank[1] + hearts[1].rank[1] + hearts[2].rank[1] + hearts[3].rank[1] + hearts[4].rank[1]])
+                        hearts[0].rank[1] + hearts[1].rank[1] + hearts[2].rank[1] + hearts[3].rank[1] + hearts[4].rank[
+                            1]])
 
             return res
 
         elif len(diamonds) >= 5:
             diamonds.sort(key=lambda y: y.rank[1])
             diamonds.reverse()
-            res.append([(diamonds[0], hearts[1], hearts[2], hearts[3], hearts[4]),
-                hearts[0].rank[1] + hearts[1].rank[1] + hearts[2].rank[1] + hearts[3].rank[1] + hearts[4].rank[1]])
+            res.append([(diamonds[0], diamonds[1], diamonds[2], diamonds[3], diamonds[4]),
+                        diamonds[0].rank[1] + diamonds[1].rank[1] + diamonds[2].rank[1] + diamonds[3].rank[1] +
+                        diamonds[4].rank[
+                            1]])
 
             return res
 
         elif len(clubs) >= 5:
-            diamonds.sort(key=lambda y: y.rank[1])
-            diamonds.reverse()
-            res.append([(diamonds[0], diamonds[1], diamonds[2], diamonds[3], diamonds[4]),
-                diamonds[0].rank[1] + diamonds[1].rank[1] + diamonds[2].rank[1] + diamonds[3].rank[1] +
-                diamonds[4].rank[1]])
+            clubs.sort(key=lambda y: y.rank[1])
+            clubs.reverse()
+            res.append([(clubs[0], clubs[1], clubs[2], clubs[3], clubs[4]),
+                        clubs[0].rank[1] + clubs[1].rank[1] + clubs[2].rank[1] + clubs[3].rank[1] +
+                        clubs[4].rank[1]])
 
             return res
 
@@ -173,8 +176,8 @@ class Table:
             spades.sort(key=lambda y: y.rank[1])
             spades.reverse()
             res.append([(spades[0], spades[1], spades[2], spades[3], spades[4]),
-                spades[0].rank[1] + spades[1].rank[1] + spades[2].rank[1] + spades[3].rank[1] +
-                spades[4].rank[1]])
+                        spades[0].rank[1] + spades[1].rank[1] + spades[2].rank[1] + spades[3].rank[1] +
+                        spades[4].rank[1]])
 
             return res
 
@@ -185,9 +188,11 @@ class Table:
 
         res = []
         for x in range(4):
-            if (all_cards[x].rank[1] == all_cards[x + 1].rank[1] and all_cards[x + 1].rank[1] == all_cards[x + 2].rank[1] 
-                and all_cards[x + 2].rank[1] == all_cards[x + 3].rank[1]):
-                res.append([(all_cards[x], all_cards[x + 1], all_cards[x + 2], all_cards[x + 3]), all_cards[x].rank[1] * 4])
+            if (all_cards[x].rank[1] == all_cards[x + 1].rank[1] and all_cards[x + 1].rank[1] == all_cards[x + 2].rank[
+                1]
+                    and all_cards[x + 2].rank[1] == all_cards[x + 3].rank[1]):
+                res.append(
+                    [(all_cards[x], all_cards[x + 1], all_cards[x + 2], all_cards[x + 3]), all_cards[x].rank[1] * 4])
 
         return res
 
@@ -198,13 +203,17 @@ class Table:
 
         res = []
         for x in range(5):
-            if all_cards[x].rank[1] == all_cards[x + 1].rank[1] and all_cards[x + 1].rank[1] == all_cards[x + 2].rank[1]:
+            if (all_cards[x].rank[1] == all_cards[x + 1].rank[1]
+                    and all_cards[x + 1].rank[1] == all_cards[x + 2].rank[1]):
                 res.append([(all_cards[x], all_cards[x + 1], all_cards[x + 2]), all_cards[x].rank[1] * 3])
 
         return res
-    
+
     def eval_two_pairs(self, pairs):
-        pass        
+        if len(pairs) >= 2:
+            return pairs[0][0], pairs[1][0], (pairs[0][1] + pairs[1][1])
+        else:
+            return False
 
     def eval_pairs(self, hand):
         all_cards = self.board + hand
@@ -213,8 +222,9 @@ class Table:
 
         res = []
         for x in range(6):
-            if all_cards[x].rank[1] == all_cards[x + 1].rank[1]: 
-                res.append([(all_cards[x], all_cards[x + 1]),all_cards[x].rank[1] * 2])
+            if all_cards[x].rank[1] == all_cards[x + 1].rank[1]:
+                res.append([(all_cards[x], all_cards[x + 1]), all_cards[x].rank[1] * 2])
+                x += 2
 
         return res
 
@@ -225,35 +235,36 @@ class Table:
 
         return all_cards[0]
 
-    
     def eval_winner(self):
+        res = []
         seat1v = self.eval_all(self.seat1.hand)
-        seat1best = None
-        #seat2v = self.eval_all(self.seat2.hand)
-        #seat2best = None
-        #seat3v = self.eval_all(self.seat3.hand)
-        #seat3best = None
-        #seat4v = self.eval_all(self.seat4.hand)
-        #seat4best = None
-        #seat5v = self.eval_all(self.seat5.hand)
-        #seat5best = None
-        #seat6v = self.eval_all(self.seat6.hand)
-        #seat6best = None
-        for x in range(6):
-            pass
-                    
+        res.append(seat1v)
+        seat2v = self.eval_all(self.seat2.hand)
+        res.append(seat2v)
+        seat3v = self.eval_all(self.seat3.hand)
+        res.append(seat3v)
+        seat4v = self.eval_all(self.seat4.hand)
+        res.append(seat4v)
+        seat5v = self.eval_all(self.seat5.hand)
+        res.append(seat5v)
+        seat6v = self.eval_all(self.seat6.hand)
+        res.append(seat6v)
+        for x in range(8):
+            tmp = []
+            for y in range(6):
+                pass
 
     def eval_all(self, hand):
-        res = []
-        straightV = self.eval_straight(hand)
-        flushV = self.eval_flush(hand)
-        quadsV = self.eval_quads(hand)
-        tripsV = self.eval_trips(hand)
-        pairsV = self.eval_pairs(hand)
-        highV = self.eval_high_card(hand)
-        full_houseV = self.eval_full_house(pairsV, tripsV)
+        straight_v = self.eval_straight(hand)
+        flush_v = self.eval_flush(hand)
+        quads_v = self.eval_quads(hand)
+        trips_v = self.eval_trips(hand)
+        pairs_v = self.eval_pairs(hand)
+        high_v = self.eval_high_card(hand)
+        full_house_v = self.eval_full_house(pairs_v, trips_v)
+        two_pair_v = self.eval_two_pairs(pairs_v)
 
-        return quadsV, full_houseV, flushV, straightV, tripsV, pairsV, highV
+        return quads_v, full_house_v, flush_v, straight_v, two_pair_v, trips_v, pairs_v, high_v
 
 
 def create_royal_flush():

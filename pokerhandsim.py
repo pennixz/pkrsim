@@ -19,9 +19,10 @@ table.river()
 # table.board = create_full_house()
 
 print(table.show_board())
-table.eval_winner()
-#print('seat1')
-#print(table.eval_all(table.seat1.hand))
+#table.eval_winner()
+print('seat1')
+print(table.seat1.get_hand())
+print(table.eval_all(table.seat1.hand))
 
 #print('seat2')
 #print(table.eval_straight(table.seat1.hand))
