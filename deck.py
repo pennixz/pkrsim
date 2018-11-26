@@ -252,7 +252,15 @@ class Table:
         for x in range(8):
             tmp = []
             for y in range(6):
-                pass
+                if res[y][x]:
+                    tmp.append(res[y][x])
+
+            if tmp:
+                return tmp
+
+
+    def compare(self, variations):
+        print(variations)
 
     def eval_all(self, hand):
         straight_v = self.eval_straight(hand)
