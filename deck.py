@@ -115,6 +115,7 @@ class Table:
     
     def eval_full_house(self, pairs, trips):
         res = []
+        print(pairs[0][0])
         try:
             if trips[0][0].index(pairs[0][0][0]) or trips[0][0].index(pairs[0][0][1]):
                 pass
@@ -201,6 +202,9 @@ class Table:
                 res.append([(all_cards[x], all_cards[x + 1], all_cards[x + 2]), all_cards[x].rank[1] * 3])
 
         return res
+    
+    def eval_two_pairs(self, pairs):
+        pass        
 
     def eval_pairs(self, hand):
         all_cards = self.board + hand
@@ -235,9 +239,8 @@ class Table:
         #seat5best = None
         #seat6v = self.eval_all(self.seat6.hand)
         #seat6best = None
-
-        if seat1v[0]:
-            seat1best = seat1v[0][1]
+        for x in range(6):
+            pass
                     
 
     def eval_all(self, hand):
