@@ -79,6 +79,15 @@ class Table:
         self.seat4 = Seat()
         self.seat5 = Seat()
         self.seat6 = Seat()
+        self.verbose = False
+
+    def all_draw_hand(self):
+        self.deck.draw_hand(self.seat1)
+        self.deck.draw_hand(self.seat2)
+        self.deck.draw_hand(self.seat3)
+        self.deck.draw_hand(self.seat4)
+        self.deck.draw_hand(self.seat5)
+        self.deck.draw_hand(self.seat6)
 
     def show_board(self):
         res = []
@@ -113,15 +122,15 @@ class Table:
                             tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] +
                             tmp[x + 4].rank[1]])
                 return res
-        
+
         return False
 
     def eval_full_house(self, pairs, trips):
-        res = [] 
+        res = []
         try:
             if trips[0][0].index(pairs[0][0][0]) or trips[0][0].index(pairs[0][0][1]):
                 pass
-        
+
         except ValueError:
             res.append([(trips[0][0], pairs[0][0]), trips[0][1] + pairs[0][1]])
         except IndexError:
@@ -206,7 +215,7 @@ class Table:
 
         if res:
             return res
-        else: 
+        else:
             return False
 
     def eval_trips(self, hand):
@@ -219,20 +228,18 @@ class Table:
             if (all_cards[x].rank[1] == all_cards[x + 1].rank[1]
                     and all_cards[x + 1].rank[1] == all_cards[x + 2].rank[1]):
                 res.append([(all_cards[x], all_cards[x + 1], all_cards[x + 2]), all_cards[x].rank[1] * 3])
-        if res:
-            return res
-        else:
-            return False
+                return res
+
+        return False
 
     def eval_two_pairs(self, pairs):
         try:
             if len(pairs) >= 2:
                 return pairs[0][0], pairs[1][0], (pairs[0][1] + pairs[1][1])
-        
+
         except TypeError:
             return False
 
-         
     def eval_pairs(self, hand):
         all_cards = self.board + hand
         all_cards.sort(key=lambda y: y.rank[1])
@@ -259,40 +266,69 @@ class Table:
     def eval_winner(self):
         res = []
         seat1v = self.eval_all(self.seat1.hand)
-        res.extend(seat1v)
         seat2v = self.eval_all(self.seat2.hand)
-        res.append(seat2v)
         seat3v = self.eval_all(self.seat3.hand)
-        res.append(seat3v)
         seat4v = self.eval_all(self.seat4.hand)
-        res.append(seat4v)
         seat5v = self.eval_all(self.seat5.hand)
-        res.append(seat5v)
         seat6v = self.eval_all(self.seat6.hand)
-        res.append(seat6v)
-        
-        print('----- SEAT 1 ------ \nQuads: ', seat1v[0], '\nFull House: ', seat1v[1],'\nFlush: ', seat1v[2], 
-                    '\nStraight: ', seat1v[3], '\nTwo pair: ', seat1v[4], '\nTrips: ', seat1v[5], '\nPairs: ', 
-                    seat1v[6], '\nHigh card: ', seat1v[7])
-      
-    #    print('Seat 2 Quads: ', seat2v[0], 'Full House: ', seat2v[1], 'Flush: ', seat2v[2], 'Straight: ', 
-          #          seat2v[3], 'Two pair: ', seat2v[4], 'Trips: ', seat2v[5], 'Pairs: ', seat2v[6], 'High card: ', seat2v[7])
- 
-        #print('Seat 3 Quads: ', seat3v[0], 'Full House: ', seat3v[1], 'Flush: ', seat3v[2], 'Straight: ', 
-         #       seat3v[3], 'Two pair: ', seat3v[4], 'Trips: ', seat3v[5], 'Pairs: ', seat3v[6], 'High card: ', seat3v[7])
- 
-        #for x in range(8):
-           # tmp = []
-           # for y in range(6):
-           #     if res[y] != False:
-                    #print(res[y][x], res[y])
-           #         pass
-           #         #tmp.append(res[y][x])
-           #     pass
-           # if tmp:
-                #print('hit')
-                #return tmp
+        res.extend([seat1v, seat2v, seat3v, seat4v, seat5v, seat6v])
+        if self.verbose:
+            print('----- SEAT 1 ------ \nQuads: ', seat1v[0], '\nFull House: ', seat1v[1], '\nFlush: ', seat1v[2],
+                  '\nStraight: ', seat1v[3], '\nTwo pair: ', seat1v[4], '\nTrips: ', seat1v[5], '\nPairs: ',
+                  seat1v[6], '\nHigh card: ', seat1v[7])
+            print('----- SEAT 2 ------ \nQuads: ', seat2v[0], '\nFull House: ', seat2v[1], '\nFlush: ', seat2v[2],
+                  '\nStraight: ', seat2v[3], '\nTwo pair: ', seat2v[4], '\nTrips: ', seat2v[5], '\nPairs: ',
+                  seat2v[6], '\nHigh card: ', seat2v[7])
+            print('----- SEAT 3 ------ \nQuads: ', seat3v[0], '\nFull House: ', seat3v[1], '\nFlush: ', seat3v[2],
+                  '\nStraight: ', seat3v[3], '\nTwo pair: ', seat3v[4], '\nTrips: ', seat3v[5], '\nPairs: ',
+                  seat3v[6], '\nHigh card: ', seat3v[7])
+            print('----- SEAT 4 ------ \nQuads: ', seat4v[0], '\nFull House: ', seat4v[1], '\nFlush: ', seat4v[2],
+                  '\nStraight: ', seat4v[3], '\nTwo pair: ', seat4v[4], '\nTrips: ', seat4v[5], '\nPairs: ',
+                  seat4v[6], '\nHigh card: ', seat4v[7])
+            print('----- SEAT 5 ------ \nQuads: ', seat5v[0], '\nFull House: ', seat5v[1], '\nFlush: ', seat5v[2],
+                  '\nStraight: ', seat5v[3], '\nTwo pair: ', seat5v[4], '\nTrips: ', seat5v[5], '\nPairs: ',
+                  seat5v[6], '\nHigh card: ', seat5v[7])
+            print('----- SEAT 6 ------ \nQuads: ', seat6v[0], '\nFull House: ', seat6v[1], '\nFlush: ', seat6v[2],
+                  '\nStraight: ', seat6v[3], '\nTwo pair: ', seat6v[4], '\nTrips: ', seat6v[5], '\nPairs: ',
+                  seat6v[6], '\nHigh card: ', seat6v[7])
 
+        for x in range(7):
+            tmp = []
+            curr_check = None
+            if x == 0:
+                curr_check = 'Quads'
+            elif x == 1:
+                curr_check = 'Full House'
+            elif x == 2:
+                curr_check = 'Flush'
+            elif x == 3:
+                curr_check = 'Straight'
+            elif x == 4:
+                curr_check = 'Two Pair'
+            elif x == 5:
+                curr_check = 'Trips'
+            elif x == 6:
+                curr_check = 'Pairs'
+            elif x == 7:
+                curr_check = 'High Card'
+
+            if seat1v[x]:
+                tmp.append(('Seat1 ', curr_check, seat1v[x]))
+            if seat2v[x]:
+                tmp.append(('Seat2 ', curr_check, seat2v[x]))
+            if seat3v[x]:
+                tmp.append(('Seat3 ', curr_check, seat3v[x]))
+            if seat4v[x]:
+                tmp.append(('Seat4 ', curr_check, seat4v[x]))
+            if seat5v[x]:
+                tmp.append(('Seat5 ', curr_check, seat5v[x]))
+            if seat6v[x]:
+                tmp.append(('Seat6 ', curr_check, seat6v[x]))
+
+            if tmp:
+                for i in range(len(tmp)):
+                    print(tmp[i])
+                break
 
     def compare(self, variations):
         print(variations)
