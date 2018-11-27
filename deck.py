@@ -112,20 +112,27 @@ class Table:
                 res.append([(tmp[x], tmp[x + 1], tmp[x + 2], tmp[x + 3], tmp[x + 4]),
                             tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] +
                             tmp[x + 4].rank[1]])
-        return res
+                return res
+        
+        return False
 
     def eval_full_house(self, pairs, trips):
-        res = []
-        print(pairs)
+        res = [] 
         try:
             if trips[0][0].index(pairs[0][0][0]) or trips[0][0].index(pairs[0][0][1]):
                 pass
+        
         except ValueError:
             res.append([(trips[0][0], pairs[0][0]), trips[0][1] + pairs[0][1]])
         except IndexError:
             pass
+        except TypeError:
+            pass
 
-        return res
+        if res:
+            return res
+        else:
+            return False
 
     def eval_flush(self, hand):
         hearts = []
@@ -181,6 +188,9 @@ class Table:
 
             return res
 
+        else:
+            return False
+
     def eval_quads(self, hand):
         all_cards = self.board + hand
         all_cards.sort(key=lambda y: y.rank[1])
@@ -194,7 +204,10 @@ class Table:
                 res.append(
                     [(all_cards[x], all_cards[x + 1], all_cards[x + 2], all_cards[x + 3]), all_cards[x].rank[1] * 4])
 
-        return res
+        if res:
+            return res
+        else: 
+            return False
 
     def eval_trips(self, hand):
         all_cards = self.board + hand
@@ -206,15 +219,20 @@ class Table:
             if (all_cards[x].rank[1] == all_cards[x + 1].rank[1]
                     and all_cards[x + 1].rank[1] == all_cards[x + 2].rank[1]):
                 res.append([(all_cards[x], all_cards[x + 1], all_cards[x + 2]), all_cards[x].rank[1] * 3])
-
-        return res
-
-    def eval_two_pairs(self, pairs):
-        if len(pairs) >= 2:
-            return pairs[0][0], pairs[1][0], (pairs[0][1] + pairs[1][1])
+        if res:
+            return res
         else:
             return False
 
+    def eval_two_pairs(self, pairs):
+        try:
+            if len(pairs) >= 2:
+                return pairs[0][0], pairs[1][0], (pairs[0][1] + pairs[1][1])
+        
+        except TypeError:
+            return False
+
+         
     def eval_pairs(self, hand):
         all_cards = self.board + hand
         all_cards.sort(key=lambda y: y.rank[1])
@@ -226,7 +244,10 @@ class Table:
                 res.append([(all_cards[x], all_cards[x + 1]), all_cards[x].rank[1] * 2])
                 x += 2
 
-        return res
+        if res:
+            return res
+        else:
+            return False
 
     def eval_high_card(self, hand):
         all_cards = self.board + hand
@@ -238,7 +259,7 @@ class Table:
     def eval_winner(self):
         res = []
         seat1v = self.eval_all(self.seat1.hand)
-        res.append(seat1v)
+        res.extend(seat1v)
         seat2v = self.eval_all(self.seat2.hand)
         res.append(seat2v)
         seat3v = self.eval_all(self.seat3.hand)
@@ -249,14 +270,28 @@ class Table:
         res.append(seat5v)
         seat6v = self.eval_all(self.seat6.hand)
         res.append(seat6v)
-        for x in range(8):
-            tmp = []
-            for y in range(6):
-                if res[y][x]:
-                    tmp.append(res[y][x])
-
-            if tmp:
-                return tmp
+        
+        print('----- SEAT 1 ------ \nQuads: ', seat1v[0], '\nFull House: ', seat1v[1],'\nFlush: ', seat1v[2], 
+                    '\nStraight: ', seat1v[3], '\nTwo pair: ', seat1v[4], '\nTrips: ', seat1v[5], '\nPairs: ', 
+                    seat1v[6], '\nHigh card: ', seat1v[7])
+      
+    #    print('Seat 2 Quads: ', seat2v[0], 'Full House: ', seat2v[1], 'Flush: ', seat2v[2], 'Straight: ', 
+          #          seat2v[3], 'Two pair: ', seat2v[4], 'Trips: ', seat2v[5], 'Pairs: ', seat2v[6], 'High card: ', seat2v[7])
+ 
+        #print('Seat 3 Quads: ', seat3v[0], 'Full House: ', seat3v[1], 'Flush: ', seat3v[2], 'Straight: ', 
+         #       seat3v[3], 'Two pair: ', seat3v[4], 'Trips: ', seat3v[5], 'Pairs: ', seat3v[6], 'High card: ', seat3v[7])
+ 
+        #for x in range(8):
+           # tmp = []
+           # for y in range(6):
+           #     if res[y] != False:
+                    #print(res[y][x], res[y])
+           #         pass
+           #         #tmp.append(res[y][x])
+           #     pass
+           # if tmp:
+                #print('hit')
+                #return tmp
 
 
     def compare(self, variations):
@@ -269,7 +304,9 @@ class Table:
         trips_v = self.eval_trips(hand)
         pairs_v = self.eval_pairs(hand)
         high_v = self.eval_high_card(hand)
-        full_house_v = self.eval_full_house(pairs_v, trips_v)
+        full_house_v = False
+        if pairs_v and trips_v:
+            full_house_v = self.eval_full_house(pairs_v, trips_v)
         two_pair_v = self.eval_two_pairs(pairs_v)
 
         return quads_v, full_house_v, flush_v, straight_v, two_pair_v, trips_v, pairs_v, high_v
