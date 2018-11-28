@@ -11,6 +11,6 @@ table.turn()
 table.river()
 # table.board = create_royal_flush()
 # table.board = create_full_house()
-
+table.verbose = True
 print(table.show_board())
 table.eval_winner()

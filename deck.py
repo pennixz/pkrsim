@@ -112,12 +112,12 @@ class Table:
         all_cards = self.board + hand
         all_cards.sort(key=lambda y: y.rank[1])
         all_cards.reverse()
-
         for x in range(4):
-            if (all_cards[x].rank[1] == all_cards[x + 1].rank[1] and all_cards[x + 1].rank[1] == all_cards[x + 2].rank[
-                1]
-                    and all_cards[x + 2].rank[1] == all_cards[x + 3].rank[1]):
+            if (all_cards[x].rank == all_cards[x + 1].rank and all_cards[x + 1].rank == all_cards[x + 2].rank
+                    and all_cards[x + 2].rank == all_cards[x + 3].rank):
                 return (all_cards[x], all_cards[x + 1], all_cards[x + 2], all_cards[x + 3]), all_cards[x].rank[1] * 4
+            else:
+                return False
 
     def eval_full_house(self, pairs, trips):
         try:
@@ -195,9 +195,9 @@ class Table:
 
     def eval_two_pairs(self, pairs):
         try:
-            if len(pairs) >= 2:
-                return pairs[0][0] + pairs[1][0], pairs[0][1] + pairs[1][1]
-
+            return pairs[0] + pairs[2], pairs[1] + pairs[3]
+        except IndexError:
+            return False
         except TypeError:
             return False
 
@@ -246,32 +246,32 @@ class Table:
         seat6v = self.eval_all(self.seat6.hand)
         res.extend([seat1v, seat2v, seat3v, seat4v, seat5v, seat6v])
         if self.verbose:
-            print('----- SEAT 1 ------ ', self.seat1.get_hand(), '\nQuads: ', seat1v[0], '\nFull House: ',
+            print('----- SEAT 1 ------', '\nHand:', self.seat1.get_hand(), '\nQuads: ', seat1v[0], '\nFull House: ',
                   seat1v[1],
                   '\nFlush: ', seat1v[2],
                   '\nStraight: ', seat1v[3], '\nTwo pair: ', seat1v[4], '\nTrips: ', seat1v[5], '\nPairs: ',
                   seat1v[6], '\nHigh card: ', seat1v[7])
-            print('----- SEAT 2 ------ ', self.seat2.get_hand(), '\nQuads: ', seat2v[0], '\nFull House: ',
+            print('----- SEAT 2 ------', '\nHand:', self.seat2.get_hand(), '\nQuads: ', seat2v[0], '\nFull House: ',
                   seat2v[1],
                   '\nFlush: ', seat2v[2],
                   '\nStraight: ', seat2v[3], '\nTwo pair: ', seat2v[4], '\nTrips: ', seat2v[5], '\nPairs: ',
                   seat2v[6], '\nHigh card: ', seat2v[7])
-            print('----- SEAT 3 ------ ', self.seat3.get_hand(), '\nQuads: ', seat3v[0], '\nFull House: ',
+            print('----- SEAT 3 ------', '\nHand:', self.seat3.get_hand(), '\nQuads: ', seat3v[0], '\nFull House: ',
                   seat3v[1],
                   '\nFlush: ', seat3v[2],
                   '\nStraight: ', seat3v[3], '\nTwo pair: ', seat3v[4], '\nTrips: ', seat3v[5], '\nPairs: ',
                   seat3v[6], '\nHigh card: ', seat3v[7])
-            print('----- SEAT 4 ------ ', self.seat4.get_hand(), '\nQuads: ', seat4v[0], '\nFull House: ',
+            print('----- SEAT 4 ------', '\nHand:', self.seat4.get_hand(), '\nQuads: ', seat4v[0], '\nFull House: ',
                   seat4v[1],
                   '\nFlush: ', seat4v[2],
                   '\nStraight: ', seat4v[3], '\nTwo pair: ', seat4v[4], '\nTrips: ', seat4v[5], '\nPairs: ',
                   seat4v[6], '\nHigh card: ', seat4v[7])
-            print('----- SEAT 5 ------ ', self.seat5.get_hand(), '\nQuads: ', seat5v[0], '\nFull House: ',
+            print('----- SEAT 5 ------', '\nHand:', self.seat5.get_hand(), '\nQuads: ', seat5v[0], '\nFull House: ',
                   seat5v[1],
                   '\nFlush: ', seat5v[2],
                   '\nStraight: ', seat5v[3], '\nTwo pair: ', seat5v[4], '\nTrips: ', seat5v[5], '\nPairs: ',
                   seat5v[6], '\nHigh card: ', seat5v[7])
-            print('----- SEAT 6 ------ ', self.seat6.get_hand(), '\nQuads: ', seat6v[0], '\nFull House: ',
+            print('----- SEAT 6 ------', '\nHand:', self.seat6.get_hand(), '\nQuads: ', seat6v[0], '\nFull House: ',
                   seat6v[1],
                   '\nFlush: ', seat6v[2],
                   '\nStraight: ', seat6v[3], '\nTwo pair: ', seat6v[4], '\nTrips: ', seat6v[5], '\nPairs: ',
