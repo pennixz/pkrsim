@@ -6,7 +6,7 @@ import numpy as np
 class Card:
     # class for creating cards
     def __init__(self, rank, rank_numeric, suit, ):
-        self.rank = rank, rank_numeric
+        self.rank = [rank, rank_numeric]
         self.suit = suit
 
     def show_card(self):
@@ -20,8 +20,8 @@ class Deck:
         self.deck = []
         self.table = []
         self.burn_cards = []
-        self.possible_ranks = '23456789xJQKA'
-        self.possible_suits = 'cdsh'
+        self.possible_ranks = '23456789TJQKA'
+        self.possible_suits = 'cdsh'  # '♤♡♢♧' '♣♦♠♥'
         self.rank_val = 2
 
     def show_deck(self):
@@ -35,20 +35,22 @@ class Deck:
         # draws the top card of the deck and returns it
         return self.deck.pop(0)
 
-    def draw_hand(self, seat):
+    def draw_hand(self, hand):
         # draw two cards from deck to seat.hand
-        seat.hand.append(self.deck.pop(0))
-        seat.hand.append(self.deck.pop(0))
+        hand.extend([self.deck.pop(0), self.deck.pop(0)])
 
     def burn_card(self):
         self.burn_cards.append(self.deck.pop(0))
 
+    def shuffle(self, deck):
+        return np.random.shuffle(deck)
+
     def create_cards(self):
         # creating all 52 card possibilities
         for rank in self.possible_ranks:
-            # looping through letters of possible_ranks
-            if rank == 'x':
+            if rank == 'T':
                 rank = 10
+            # looping through letters of possible_ranks
             for suit in self.possible_suits:
                 # looping through letters of possible_suits and finally creating new card with current rank and suit
                 card = Card(rank, self.rank_val, suit)
@@ -82,12 +84,12 @@ class Table:
         self.verbose = False
 
     def all_draw_hand(self):
-        self.deck.draw_hand(self.seat1)
-        self.deck.draw_hand(self.seat2)
-        self.deck.draw_hand(self.seat3)
-        self.deck.draw_hand(self.seat4)
-        self.deck.draw_hand(self.seat5)
-        self.deck.draw_hand(self.seat6)
+        self.deck.draw_hand(self.seat1.hand)
+        self.deck.draw_hand(self.seat2.hand)
+        self.deck.draw_hand(self.seat3.hand)
+        self.deck.draw_hand(self.seat4.hand)
+        self.deck.draw_hand(self.seat5.hand)
+        self.deck.draw_hand(self.seat6.hand)
 
     def show_board(self):
         res = []
