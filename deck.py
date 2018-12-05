@@ -179,7 +179,6 @@ class Table:
 
         else:
             return False
-    
 
     def eval_straight_flush(self, hand):
         tmp = self.board + hand
@@ -205,13 +204,11 @@ class Table:
         tmp.sort(key=lambda y: y.rank[1])
         tmp.reverse()
         for x in range(3):
-            
 
             if (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
                     and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
                     and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
                     and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1):
-                
                 return ((tmp[x], tmp[x + 1], tmp[x + 2], tmp[x + 3], tmp[x + 4]),
                         tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] +
                         tmp[x + 4].rank[1])
@@ -271,37 +268,42 @@ class Table:
         seat6v = self.eval_all(self.seat6.hand)
         res.extend([seat1v, seat2v, seat3v, seat4v, seat5v, seat6v])
         if self.verbose:
-            print('----- SEAT 1 ------', '\nHand:', self.seat1.get_hand(),'\nRoyal Flush: ', seat1v[0],
-                    'Straight Flush: ', seat1v[1],  '\nQuads: ', seat1v[2], '\nFull House: ',
+            print('----- SEAT 1 ------', '\nHand:', self.seat1.get_hand(), '\nRoyal Flush: ', seat1v[0],
+                  '\nStraight Flush: ', seat1v[1], '\nQuads: ', seat1v[2], '\nFull House: ',
                   seat1v[3],
                   '\nFlush: ', seat1v[4],
-                  '\nStraight: ', seat1v[5], '\nTwo pair: ', seat1v[4], '\nTrips: ', seat1v[5], '\nPairs: ',
-                  seat1v[6], '\nHigh card: ', seat1v[7])
-            print('----- SEAT 2 ------', '\nHand:', self.seat2.get_hand(), '\nQuads: ', seat2v[0], '\nFull House: ',
-                  seat2v[1],
-                  '\nFlush: ', seat2v[2],
-                  '\nStraight: ', seat2v[3], '\nTwo pair: ', seat2v[4], '\nTrips: ', seat2v[5], '\nPairs: ',
-                  seat2v[6], '\nHigh card: ', seat2v[7])
-            print('----- SEAT 3 ------', '\nHand:', self.seat3.get_hand(), '\nQuads: ', seat3v[0], '\nFull House: ',
-                  seat3v[1],
-                  '\nFlush: ', seat3v[2],
-                  '\nStraight: ', seat3v[3], '\nTwo pair: ', seat3v[4], '\nTrips: ', seat3v[5], '\nPairs: ',
-                  seat3v[6], '\nHigh card: ', seat3v[7])
-            print('----- SEAT 4 ------', '\nHand:', self.seat4.get_hand(), '\nQuads: ', seat4v[0], '\nFull House: ',
-                  seat4v[1],
-                  '\nFlush: ', seat4v[2],
-                  '\nStraight: ', seat4v[3], '\nTwo pair: ', seat4v[4], '\nTrips: ', seat4v[5], '\nPairs: ',
-                  seat4v[6], '\nHigh card: ', seat4v[7])
-            print('----- SEAT 5 ------', '\nHand:', self.seat5.get_hand(), '\nQuads: ', seat5v[0], '\nFull House: ',
-                  seat5v[1],
-                  '\nFlush: ', seat5v[2],
-                  '\nStraight: ', seat5v[3], '\nTwo pair: ', seat5v[4], '\nTrips: ', seat5v[5], '\nPairs: ',
-                  seat5v[6], '\nHigh card: ', seat5v[7])
-            print('----- SEAT 6 ------', '\nHand:', self.seat6.get_hand(), '\nQuads: ', seat6v[0], '\nFull House: ',
-                  seat6v[1],
-                  '\nFlush: ', seat6v[2],
-                  '\nStraight: ', seat6v[3], '\nTwo pair: ', seat6v[4], '\nTrips: ', seat6v[5], '\nPairs: ',
-                  seat6v[6], '\nHigh card: ', seat6v[7])
+                  '\nStraight: ', seat1v[5], '\nTwo pair: ', seat1v[6], '\nTrips: ', seat1v[7], '\nPairs: ',
+                  seat1v[8], '\nHigh card: ', seat1v[9])
+            print('----- SEAT 2 ------', '\nHand:', self.seat1.get_hand(), '\nRoyal Flush: ', seat2v[0],
+                  '\nStraight Flush: ', seat2v[1], '\nQuads: ', seat2v[2], '\nFull House: ',
+                  seat2v[3],
+                  '\nFlush: ', seat2v[4],
+                  '\nStraight: ', seat2v[5], '\nTwo pair: ', seat2v[6], '\nTrips: ', seat2v[7], '\nPairs: ',
+                  seat2v[8], '\nHigh card: ', seat2v[9])
+            print('----- SEAT 3 ------', '\nHand:', self.seat1.get_hand(), '\nRoyal Flush: ', seat3v[0],
+                  '\nStraight Flush: ', seat3v[1], '\nQuads: ', seat3v[2], '\nFull House: ',
+                  seat3v[3],
+                  '\nFlush: ', seat3v[4],
+                  '\nStraight: ', seat3v[5], '\nTwo pair: ', seat3v[6], '\nTrips: ', seat3v[7], '\nPairs: ',
+                  seat3v[8], '\nHigh card: ', seat3v[9])
+            print('----- SEAT 4 ------', '\nHand:', self.seat1.get_hand(), '\nRoyal Flush: ', seat4v[0],
+                  '\nStraight Flush: ', seat4v[1], '\nQuads: ', seat4v[2], '\nFull House: ',
+                  seat4v[3],
+                  '\nFlush: ', seat4v[4],
+                  '\nStraight: ', seat4v[5], '\nTwo pair: ', seat4v[6], '\nTrips: ', seat4v[7], '\nPairs: ',
+                  seat4v[8], '\nHigh card: ', seat4v[9])
+            print('----- SEAT 5 ------', '\nHand:', self.seat1.get_hand(), '\nRoyal Flush: ', seat5v[0],
+                  '\nStraight Flush: ', seat5v[1], '\nQuads: ', seat5v[2], '\nFull House: ',
+                  seat5v[3],
+                  '\nFlush: ', seat5v[4],
+                  '\nStraight: ', seat5v[5], '\nTwo pair: ', seat5v[6], '\nTrips: ', seat5v[7], '\nPairs: ',
+                  seat5v[8], '\nHigh card: ', seat5v[9])
+            print('----- SEAT 6 ------', '\nHand:', self.seat1.get_hand(), '\nRoyal Flush: ', seat6v[0],
+                  '\nStraight Flush: ', seat6v[1], '\nQuads: ', seat6v[2], '\nFull House: ',
+                  seat6v[3],
+                  '\nFlush: ', seat6v[4],
+                  '\nStraight: ', seat6v[5], '\nTwo pair: ', seat6v[6], '\nTrips: ', seat6v[7], '\nPairs: ',
+                  seat6v[8], '\nHigh card: ', seat6v[9])
 
         for x in range(9):
             tmp = []
@@ -317,7 +319,7 @@ class Table:
             elif x == 4:
                 curr_check = 'Flush'
             elif x == 5:
-                curr_check = 'Straight' 
+                curr_check = 'Straight'
             elif x == 6:
                 curr_check = 'Two Pair'
             elif x == 7:
