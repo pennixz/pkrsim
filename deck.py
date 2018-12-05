@@ -179,16 +179,39 @@ class Table:
 
         else:
             return False
+    
+
+    def eval_straight_flush(self, hand):
+        tmp = self.board + hand
+        tmp.sort(key=lambda y: y.rank[1])
+        tmp.reverse()
+        for x in range(3):
+            if (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
+                    and tmp[x].suit == tmp[x + 1].suit
+                    and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
+                    and tmp[x + 1].suit == tmp[x + 1].suit
+                    and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
+                    and tmp[x + 2].suit == tmp[x + 3].suit
+                    and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1
+                    and tmp[x + 3].suit == tmp[x + 4].suit):
+                return ((tmp[x], tmp[x + 1], tmp[x + 2], tmp[x + 3], tmp[x + 4]),
+                        tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] +
+                        tmp[x + 4].rank[1])
+
+        return False
 
     def eval_straight(self, hand):
         tmp = self.board + hand
         tmp.sort(key=lambda y: y.rank[1])
         tmp.reverse()
         for x in range(3):
+            
+
             if (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
                     and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
                     and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
                     and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1):
+                
                 return ((tmp[x], tmp[x + 1], tmp[x + 2], tmp[x + 3], tmp[x + 4]),
                         tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] +
                         tmp[x + 4].rank[1])
@@ -248,10 +271,11 @@ class Table:
         seat6v = self.eval_all(self.seat6.hand)
         res.extend([seat1v, seat2v, seat3v, seat4v, seat5v, seat6v])
         if self.verbose:
-            print('----- SEAT 1 ------', '\nHand:', self.seat1.get_hand(), '\nQuads: ', seat1v[0], '\nFull House: ',
-                  seat1v[1],
-                  '\nFlush: ', seat1v[2],
-                  '\nStraight: ', seat1v[3], '\nTwo pair: ', seat1v[4], '\nTrips: ', seat1v[5], '\nPairs: ',
+            print('----- SEAT 1 ------', '\nHand:', self.seat1.get_hand(),'\nRoyal Flush: ', seat1v[0],
+                    'Straight Flush: ', seat1v[1],  '\nQuads: ', seat1v[2], '\nFull House: ',
+                  seat1v[3],
+                  '\nFlush: ', seat1v[4],
+                  '\nStraight: ', seat1v[5], '\nTwo pair: ', seat1v[4], '\nTrips: ', seat1v[5], '\nPairs: ',
                   seat1v[6], '\nHigh card: ', seat1v[7])
             print('----- SEAT 2 ------', '\nHand:', self.seat2.get_hand(), '\nQuads: ', seat2v[0], '\nFull House: ',
                   seat2v[1],
@@ -279,24 +303,28 @@ class Table:
                   '\nStraight: ', seat6v[3], '\nTwo pair: ', seat6v[4], '\nTrips: ', seat6v[5], '\nPairs: ',
                   seat6v[6], '\nHigh card: ', seat6v[7])
 
-        for x in range(7):
+        for x in range(9):
             tmp = []
             curr_check = None
             if x == 0:
-                curr_check = 'Quads'
+                curr_check = 'Royal Flush'
             elif x == 1:
-                curr_check = 'Full House'
+                curr_check = 'Straight Flush'
             elif x == 2:
-                curr_check = 'Flush'
+                curr_check = 'Quads'
             elif x == 3:
-                curr_check = 'Straight'
+                curr_check = 'Full House'
             elif x == 4:
-                curr_check = 'Two Pair'
+                curr_check = 'Flush'
             elif x == 5:
-                curr_check = 'Trips'
+                curr_check = 'Straight' 
             elif x == 6:
-                curr_check = 'Pairs'
+                curr_check = 'Two Pair'
             elif x == 7:
+                curr_check = 'Trips'
+            elif x == 8:
+                curr_check = 'Pairs'
+            elif x == 9:
                 curr_check = 'High Card'
 
             if seat1v[x]:
@@ -320,6 +348,12 @@ class Table:
     def eval_all(self, hand):
         straight_v = self.eval_straight(hand)
         flush_v = self.eval_flush(hand)
+        straight_flush_v = False
+        royal_flush_v = False
+        if straight_v and flush_v:
+            straight_flush_v = self.eval_straight_flush(hand)
+        if straight_flush_v and straight_flush_v[1] == 60:
+            royal_flush_v = straight_flush_v
         quads_v = self.eval_quads(hand)
         trips_v = self.eval_trips(hand)
         pairs_v = self.eval_pairs(hand)
@@ -329,7 +363,7 @@ class Table:
             full_house_v = self.eval_full_house(pairs_v, trips_v)
         two_pair_v = self.eval_two_pairs(pairs_v)
 
-        return quads_v, full_house_v, flush_v, straight_v, two_pair_v, trips_v, pairs_v, high_v
+        return royal_flush_v, straight_flush_v, quads_v, full_house_v, flush_v, straight_v, two_pair_v, trips_v, pairs_v, high_v
 
     def compare(self, variations):
         print(variations)
