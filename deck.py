@@ -181,11 +181,24 @@ class Table:
             return False
 
     def eval_straight_flush(self, hand):
-        tmp = self.board + hand
+        tmp_ = self.board + hand
+        tmp = []
+        dupes = []
+        
+        for card in tmp_:
+            try:
+                if dupes.index(card.rank[1]):
+                    pass    
+            except:
+                dupes.append(card.rank[1])
+                tmp.append(card)
+
+
         tmp.sort(key=lambda y: y.rank[1])
         tmp.reverse()
         for x in range(3):
-            if (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
+            try:
+                if (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
                     and tmp[x].suit == tmp[x + 1].suit
                     and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
                     and tmp[x + 1].suit == tmp[x + 1].suit
@@ -193,25 +206,44 @@ class Table:
                     and tmp[x + 2].suit == tmp[x + 3].suit
                     and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1
                     and tmp[x + 3].suit == tmp[x + 4].suit):
-                return ((tmp[x], tmp[x + 1], tmp[x + 2], tmp[x + 3], tmp[x + 4]),
-                        tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] +
-                        tmp[x + 4].rank[1])
+                    
+                    return ((tmp[x], tmp[x + 1], tmp[x + 2], tmp[x + 3], tmp[x + 4]),
+                            tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] +
+                            tmp[x + 4].rank[1])
+            
+            except ValueError:
+                print('val error')
+            except IndexError:
+                print('index error')
 
         return False
 
     def eval_straight(self, hand):
-        tmp = self.board + hand
+        tmp_ = self.board + hand 
+        dupes = []
+        tmp = []
+        for card in tmp_:
+            try:
+                if dupes.index(card.rank[1]):
+                    pass    
+            except:
+                dupes.append(card.rank[1])
+                tmp.append(card)
+
         tmp.sort(key=lambda y: y.rank[1])
         tmp.reverse()
         for x in range(3):
+            try:
 
-            if (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
-                    and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
-                    and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
-                    and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1):
-                return ((tmp[x], tmp[x + 1], tmp[x + 2], tmp[x + 3], tmp[x + 4]),
-                        tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] +
-                        tmp[x + 4].rank[1])
+                if (tmp[x].rank[1] == tmp[x + 1].rank[1] + 1
+                        and tmp[x + 1].rank[1] == tmp[x + 2].rank[1] + 1
+                        and tmp[x + 2].rank[1] == tmp[x + 3].rank[1] + 1
+                        and tmp[x + 3].rank[1] == tmp[x + 4].rank[1] + 1):
+                    return ((tmp[x], tmp[x + 1], tmp[x + 2], tmp[x + 3], tmp[x + 4]),
+                            tmp[x].rank[1] + tmp[x + 1].rank[1] + tmp[x + 2].rank[1] + tmp[x + 3].rank[1] +
+                            tmp[x + 4].rank[1])
+            except IndexError:
+                pass
 
         return False
 
@@ -341,7 +373,8 @@ class Table:
                 tmp.append(('Seat5 ', self.seat5.get_hand(), curr_check, seat5v[x]))
             if seat6v[x]:
                 tmp.append(('Seat6 ', self.seat6.get_hand(), curr_check, seat6v[x]))
-
+            # [0][1]
+            best = 0
             if tmp:
                 for i in range(len(tmp)):
                     print(tmp[i])
